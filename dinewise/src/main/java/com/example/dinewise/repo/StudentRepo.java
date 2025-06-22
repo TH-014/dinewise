@@ -9,5 +9,15 @@ import java.util.UUID;
 @RepositoryRestResource
 public interface StudentRepo extends JpaRepository<Student, UUID> {
 
+    Student findByFirstName(String firstName);
+
+    Student findByStdId(String studentId);
+
+    Student findByUsernameAndPasswordHash(String username, String password);
+
+    Student findByEmail(String email);
+
+    Student findByUsername(String username);
+
 
 }
