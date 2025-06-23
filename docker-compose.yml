@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./dinewise
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/dinewiseDB
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin
+    networks:
+      - dinewise-net
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8082:80"
+    depends_on:
+      - backend
+    networks:
+      - dinewise-net
+
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_DB: dinewiseDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dinewise-net
+
+volumes:
+  postgres_data:
+
+networks:
+  dinewise-net:
