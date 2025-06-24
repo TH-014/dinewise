@@ -53,8 +53,8 @@ const Login = () => {
 
 
 
-
-    const response = await fetch('http://52.184.83.81:8080/login', {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/login`, {
+    // const response = await fetch('http://52.184.83.81:8080/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
