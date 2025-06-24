@@ -106,7 +106,7 @@ const ManagerStockView = () => {
 
   const fetchStocks = async () => {
     try {
-      const response = await fetch('http://localhost:8080/stocks', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/stocks`, {
         credentials: 'include',
       });
       const data = await response.json();
@@ -125,7 +125,7 @@ const ManagerStockView = () => {
   };
 
   const handleSubmit = async () => {
-    const endpoint = editItem ? `http://localhost:8080/stocks/${editItem.id}` : 'http://localhost:8080/stocks';
+    const endpoint = editItem ? `${import.meta.env.VITE_API_BASE_URL}/stocks/${editItem.id}` : `${import.meta.env.VITE_API_BASE_URL}/stocks`;
     const method = editItem ? 'PUT' : 'POST';
 
     try {

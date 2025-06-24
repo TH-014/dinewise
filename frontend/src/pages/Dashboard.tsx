@@ -94,7 +94,7 @@ const Dashboard = () => {
     const fetchConfirmedMeals = async (stdId: string) => {
       try {
         const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
-        const response = await fetch(`http://localhost:8080/student/from/${today}`, {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/student/from/${today}`, {
           method: 'GET',
           credentials: 'include', // Include cookies (authToken)
         });
@@ -131,7 +131,7 @@ const Dashboard = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8080/student/mealconfirmation', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/student/mealconfirmation`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -185,7 +185,7 @@ const Dashboard = () => {
 
   const handleDeleteMeal = async (mealId: number) => {
     try {
-      const response = await fetch(`http://localhost:8080/student/mealconfirmation/${mealId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/student/mealconfirmation/${mealId}`, {
         method: 'DELETE',
         credentials: 'include',
       });

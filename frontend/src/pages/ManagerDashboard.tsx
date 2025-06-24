@@ -13,7 +13,7 @@ const ManagerDashboard = () => {
   useEffect(() => {
     const fetchMealStats = async () => {
       try {
-        const response = await fetch('http://localhost:8080/manager/dashboard/stats', {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/manager/dashboard/stats`, {
           method: 'GET',
           credentials: 'include',
         });

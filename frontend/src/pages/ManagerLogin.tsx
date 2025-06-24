@@ -26,7 +26,7 @@ const ManagerLogin = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8080/manager/login', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/manager/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
