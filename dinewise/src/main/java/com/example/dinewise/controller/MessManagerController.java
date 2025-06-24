@@ -63,7 +63,7 @@ public class MessManagerController {
 
         ResponseCookie cookie = ResponseCookie.from("authToken", token)
                 .httpOnly(true)
-                .secure(true)
+                .secure(false)
                 .path("/")
                 .maxAge(24 * 60 * 60)
                 .sameSite("Lax")
