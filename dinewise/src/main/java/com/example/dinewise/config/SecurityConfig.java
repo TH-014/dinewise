@@ -124,6 +124,10 @@ public class SecurityConfig {
                             System.out.println("Role is not  null in JWT claims");
                         }
 
+                        if(role==null){
+                            System.out.println("Roll is null");
+                        }
+
                         if (role.equals("student")) {
                             Student student = studentService.getStudentByUsername(subject);
                             UsernamePasswordAuthenticationToken authToken =
