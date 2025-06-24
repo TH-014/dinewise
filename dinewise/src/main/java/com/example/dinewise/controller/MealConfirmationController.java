@@ -40,6 +40,7 @@ public class MealConfirmationController {
                                            @RequestBody MealConfirmationRequestDTO requestDTO) {
 
         String stdId = student.getStdId();
+        System.out.println(stdId);
         try {
             if (stdId == null || stdId.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -59,7 +60,7 @@ public class MealConfirmationController {
     public ResponseEntity<?> getMyMealConfirmationsFromDate(
             @AuthenticationPrincipal Student authenticatedStudent,
             @PathVariable String date) {
-
+            System.out.println(authenticatedStudent);
         try {
             if (authenticatedStudent == null || authenticatedStudent.getStdId() == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
