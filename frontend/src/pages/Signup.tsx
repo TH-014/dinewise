@@ -34,7 +34,7 @@ const Signup = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8080/signup', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
