@@ -77,9 +77,7 @@ const Dashboard = () => {
       }
 
       if (selectedDate) {
-        console.log(selectedDate);
         fetchMenuForDate(selectedDate);
-        console.log("Fetched menus");
   }
 
   
@@ -98,9 +96,7 @@ const Dashboard = () => {
 
   useEffect(() => {
   if (selectedDate) {
-    console.log(selectedDate);
     fetchMenuForDate(selectedDate);
-    console.log("Fetched menus");
   }
 }, [selectedDate]);
 
@@ -132,9 +128,10 @@ const Dashboard = () => {
     const fetchMenuForDate = async (date: Date) => {
   try {
     const formattedDate = format(date, 'yyyy-MM-dd');
+    console.log(formattedDate)
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/menus?date=${formattedDate}`);
     const data = await response.json();
-
+    console.log(data);
     if (data.lunchItems || data.dinnerItems) {
       setMenu({ lunchItems: data.lunchItems || [], dinnerItems: data.dinnerItems || [] });
     } else {
