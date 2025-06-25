@@ -43,6 +43,8 @@ const Dashboard = () => {
   const [willDinner, setWillDinner] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [menu, setMenu] = useState<{ lunchItems: string[]; dinnerItems: string[] } | null>(null);
+
 
   useEffect(() => {
     // Check authentication and load user data
@@ -73,10 +75,11 @@ const Dashboard = () => {
         fetchConfirmedMeals(studentId);
       }
 
+      if (selectedDate) {
+        fetchMenuForDate(selectedDate);
+  }
 
-
-      
-      // student data - came from JWT or API call
+  
       setStudent({
         stdId: studentId,
         firstName: name,
@@ -89,6 +92,15 @@ const Dashboard = () => {
 
     checkAuth();
   }, [navigate]);
+
+  useEffect(() => {
+  if (selectedDate) {
+    fetchMenuForDate(selectedDate);
+  }
+}, [selectedDate]);
+
+
+
 
 
     const fetchConfirmedMeals = async (stdId: string) => {
@@ -110,6 +122,25 @@ const Dashboard = () => {
         console.error('Error fetching meals:', error);
       }
     };
+
+
+    const fetchMenuForDate = async (date: Date) => {
+  try {
+    const formattedDate = format(date, 'yyyy-MM-dd');
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/menus?date=${formattedDate}`);
+    const data = await response.json();
+
+    if (data.lunchItems || data.dinnerItems) {
+      setMenu({ lunchItems: data.lunchItems || [], dinnerItems: data.dinnerItems || [] });
+    } else {
+      setMenu(null);
+    }
+  } catch (error) {
+    console.error("Error fetching menu:", error);
+    setMenu(null);
+  }
+};
+
 
 
 
@@ -442,6 +473,19 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
+          {menu && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div className="mb-2">
+                  <h4 className="text-blue-800 font-semibold">Menu for {format(selectedDate!, 'PPP')}</h4>
+                </div>
+                <div>
+                  <strong>Lunch:</strong> {menu.lunchItems.length ? menu.lunchItems.join(', ') : 'Not set'}
+                </div>
+                <div>
+                  <strong>Dinner:</strong> {menu.dinnerItems.length ? menu.dinnerItems.join(', ') : 'Not set'}
+                </div>
+              </div>
+            )}
         </div>
       </main>
     </div>
