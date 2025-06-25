@@ -128,10 +128,10 @@ const Dashboard = () => {
     const fetchMenuForDate = async (date: Date) => {
   try {
     const formattedDate = format(date, 'yyyy-MM-dd');
-    console.log(formattedDate)
+    // console.log(formattedDate)
     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/menus?date=${formattedDate}`);
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (data.lunchItems || data.dinnerItems) {
       setMenu({ lunchItems: data.lunchItems || [], dinnerItems: data.dinnerItems || [] });
     } else {
