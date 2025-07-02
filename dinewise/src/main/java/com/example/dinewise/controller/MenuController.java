@@ -29,12 +29,15 @@ public class MenuController {
     public ResponseEntity<?> getMenuByDate(@RequestParam("date") String dateStr) {
         try {
             LocalDate date = LocalDate.parse(dateStr);
-            Optional<Menu> optionalMenu = menuRepo.findByMenuDate(date);
-            if (optionalMenu.isPresent()) {
-                return ResponseEntity.ok(optionalMenu.get());
-            } else {
-                return ResponseEntity.ok(Map.of("message", "No menu found for selected date"));
-            }
+            return menuRepo.findByMenuDate(date)
+                .map(menu -> ResponseEntity.ok(Map.of(
+                    "lunchItems", menu.getLunchItems(),
+                    "dinnerItems", menu.getDinnerItems()
+                )))
+                .orElse(ResponseEntity.ok(Map.of(
+                    "lunchItems", List.of(),
+                    "dinnerItems", List.of()
+                )));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", "Invalid date format or internal error"));
         }

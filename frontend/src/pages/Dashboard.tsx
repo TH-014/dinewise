@@ -45,6 +45,7 @@ const Dashboard = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [menu, setMenu] = useState<{ lunchItems: string[]; dinnerItems: string[] } | null>(null);
+  const [menuDate, setMenuDate] = useState<Date>(new Date());
 
 
   useEffect(() => {
@@ -78,7 +79,7 @@ const Dashboard = () => {
 
       if (selectedDate) {
         fetchMenuForDate(selectedDate);
-  }
+      }
 
   
       setStudent({
@@ -95,11 +96,17 @@ const Dashboard = () => {
   }, [navigate]);
 
   useEffect(() => {
-  if (selectedDate) {
-    fetchMenuForDate(selectedDate);
-  }
-}, [selectedDate]);
+    if (selectedDate) {
+      fetchMenuForDate(selectedDate);
+    }
+  }, [selectedDate]);
 
+
+  useEffect(() => {
+    if (menuDate) {
+      fetchMenuForDate(menuDate);
+    }
+  }, [menuDate]);
 
 
 
@@ -125,23 +132,47 @@ const Dashboard = () => {
     };
 
 
-    const fetchMenuForDate = async (date: Date) => {
-  try {
-    const formattedDate = format(date, 'yyyy-MM-dd');
-    // console.log(formattedDate)
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/menus?date=${formattedDate}`);
-    const data = await response.json();
-    // console.log(data);
-    if (data.lunchItems || data.dinnerItems) {
-      setMenu({ lunchItems: data.lunchItems || [], dinnerItems: data.dinnerItems || [] });
-    } else {
-      setMenu(null);
-    }
-  } catch (error) {
-    console.error("Error fetching menu:", error);
-    setMenu(null);
-  }
-};
+//     const fetchMenuForDate = async (date: Date) => {
+//   try {
+//     const formattedDate = format(date, 'yyyy-MM-dd');
+//     // console.log(formattedDate)
+//     const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/menus?date=${formattedDate}`);
+//     const data = await response.json();
+//     // console.log(data);
+//     if (data.lunchItems || data.dinnerItems) {
+//       setMenu({ lunchItems: data.lunchItems || [], dinnerItems: data.dinnerItems || [] });
+//     } else {
+//       setMenu(null);
+//     }
+//   } catch (error) {
+//     console.error("Error fetching menu:", error);
+//     setMenu(null);
+//   }
+// };
+
+
+const fetchMenuForDate = async (date: Date) => {
+      try {
+        const formattedDate = format(date, 'yyyy-MM-dd');
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/menus?date=${formattedDate}`, {
+          method: 'GET',
+          credentials: 'include', // Include cookies for authentication
+        });
+        const data = await response.json();
+
+        if (data.lunchItems || data.dinnerItems) {
+          setMenu({ lunchItems: data.lunchItems || [], dinnerItems: data.dinnerItems || [] });
+        } else {
+          setMenu(null);
+        }
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+        setMenu(null);
+      }
+    };
+
+
+
 
 
 
@@ -475,7 +506,7 @@ const Dashboard = () => {
               </CardContent>
             </Card>
           </div>
-          {menu && (
+          {/* {menu && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="mb-2">
                   <h4 className="text-blue-800 font-semibold">Menu for {format(selectedDate!, 'PPP')}</h4>
@@ -487,7 +518,64 @@ const Dashboard = () => {
                   <strong>Dinner:</strong> {menu.dinnerItems.length ? menu.dinnerItems.join(', ') : 'Not set'}
                 </div>
               </div>
-            )}
+            )} */}
+
+             <Card className="mt-8 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center space-x-2">
+                    <CalendarIcon className="h-6 w-6 text-blue-600" />
+                    <span>View Menu</span>
+                  </CardTitle>
+                  <CardDescription>
+                    Select a date to see the menu (defaults to today)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Select Date</Label>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full justify-start text-left font-normal h-12",
+                            !menuDate && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {menuDate ? format(menuDate, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={menuDate}
+                          onSelect={setMenuDate}
+                          initialFocus
+                          className="p-3 pointer-events-auto"
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+
+                  {menu ? (
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="mb-2">
+                        <h4 className="text-blue-800 font-semibold">Menu for {format(menuDate, 'PPP')}</h4>
+                      </div>
+                      <div>
+                        <strong>Lunch:</strong> {menu.lunchItems.length ? menu.lunchItems.join(', ') : 'Not set'}
+                      </div>
+                      <div>
+                        <strong>Dinner:</strong> {menu.dinnerItems.length ? menu.dinnerItems.join(', ') : 'Not set'}
+                      </div>
+                    </div>
+                  ) : (
+                    <p className="text-gray-600">No menu available for this date.</p>
+                  )}
+                </CardContent>
+              </Card>
+
         </div>
       </main>
     </div>
