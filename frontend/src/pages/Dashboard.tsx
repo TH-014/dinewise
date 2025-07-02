@@ -505,7 +505,7 @@ const fetchMenuForDate = async (date: Date) => {
                 </Button>
               </CardContent>
             </Card>
-          </div>
+          {/* </div> */}
           {/* {menu && (
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <div className="mb-2">
@@ -575,6 +575,7 @@ const fetchMenuForDate = async (date: Date) => {
                   )}
                 </CardContent>
               </Card>
+            </div>
 
         </div>
       </main>
