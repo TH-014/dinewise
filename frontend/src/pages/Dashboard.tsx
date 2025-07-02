@@ -523,13 +523,6 @@ const fetchMenuForDate = async (date: Date) => {
 
              <Card className="mt-8 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
                 <CardHeader>
-                   <Button 
-                  onClick={handleMealSubmission}
-                  disabled={isSubmitting || (!willLunch && !willDinner) || !selectedDate}
-                  className="w-full h-12 text-lg bg-green-600 hover:bg-green-700"
-                >
-                  {isSubmitting ? 'Submitting...' : 'Confirm Meal Preferences'}
-                </Button>
                   <CardTitle className="flex items-center space-x-2">
                     <CalendarIcon className="h-6 w-6 text-blue-600" />
                     <span>View Menu</span>
