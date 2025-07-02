@@ -98,6 +98,7 @@ jobs:
           script: |
             cd ~/Documents/Project/dinewise
             export IMAGE_TAG=${{ github.sha }}
+            git pull
 
             # Remove old containers & images
             docker-compose down --remove-orphans
@@ -106,4 +107,4 @@ jobs:
 
             # Pull and start new containers
             docker-compose pull
-            docker-compose up -d --force-recreate
+            docker-compose up --build -d
