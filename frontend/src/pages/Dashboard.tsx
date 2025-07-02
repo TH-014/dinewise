@@ -12,7 +12,7 @@ import { Utensils, Calendar as CalendarIcon, User, LogOut, CheckCircle } from 'l
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
-import { console } from 'inspector';
+// import { console } from 'inspector';
 
 interface Student {
   stdId: string;
