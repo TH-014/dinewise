@@ -66,6 +66,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Run Backend Tests
+        working-directory: ./dinewise
+        run: mvn test
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
