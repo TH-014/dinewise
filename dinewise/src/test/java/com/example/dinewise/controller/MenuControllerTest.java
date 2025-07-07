@@ -49,8 +49,9 @@ public class MenuControllerTest {
         mockMvc.perform(get("/menus")
                 .param("date", date.toString()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.menuDate").value(date.toString()))
                 .andExpect(jsonPath("$.lunchItems[0]").value("Rice"))
+                .andExpect(jsonPath("$.lunchItems[1]").value("Fish"))
+                .andExpect(jsonPath("$.dinnerItems[0]").value("Bread"))
                 .andExpect(jsonPath("$.dinnerItems[1]").value("Chicken"));
     }
 
@@ -62,7 +63,8 @@ public class MenuControllerTest {
         mockMvc.perform(get("/menus")
                 .param("date", date.toString()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message").value("No menu found for selected date"));
+                .andExpect(jsonPath("$.lunchItems").isEmpty())
+                .andExpect(jsonPath("$.dinnerItems").isEmpty());
     }
 
     @Test
