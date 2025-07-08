@@ -1,7 +1,0 @@
-.vite
-.vscode
-*.test.ts
-*.test.tsx
-__tests__/
-vitest.config.ts
-vite.config.ts      # if you switched to vite.config.js
