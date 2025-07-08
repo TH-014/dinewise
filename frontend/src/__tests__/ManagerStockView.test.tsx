@@ -41,7 +41,7 @@ describe('ManagerStockView', () => {
 
     expect(await screen.findByText('Stock Inventory')).toBeInTheDocument();
     expect(await screen.findByText('Rice')).toBeInTheDocument();
-    expect(fetch).toHaveBeenCalledWith('http://localhost:8080/stocks', { credentials: 'include' });
+    expect(fetch).toHaveBeenCalledWith(`${import.meta.env.VITE_API_BASE_URL}/stocks`, { credentials: 'include' });
   });
 
   it('opens the dialog and submits new item', async () => {
@@ -63,7 +63,7 @@ describe('ManagerStockView', () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        'http://localhost:8080/stocks',
+        `${import.meta.env.VITE_API_BASE_URL}/stocks`,
         expect.objectContaining({
           method: 'POST',
           body: JSON.stringify({
@@ -149,7 +149,7 @@ it('opens edit mode and updates item', async () => {
 
   await waitFor(() => {
     expect(fetch).toHaveBeenCalledWith(
-      'http://localhost:8080/stocks/2',
+      `${import.meta.env.VITE_API_BASE_URL}/stocks/2`,
       expect.objectContaining({
         method: 'PUT',
         body: JSON.stringify({
