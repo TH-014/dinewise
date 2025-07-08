@@ -4,6 +4,7 @@ import com.example.dinewise.dto.request.MealConfirmationRequestDTO;
 import com.example.dinewise.dto.response.MealConfirmationResponseDTO;
 import com.example.dinewise.model.MealConfirmation;
 import com.example.dinewise.repo.MealConfirmationRepository;
+import com.example.dinewise.repo.DueRepository;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,12 +15,16 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 public class MealConfirmationServiceTest {
 
     @Mock
     private MealConfirmationRepository repository;
+    @Mock
+    private DueRepository dueRepository;
 
     @InjectMocks
     private MealConfirmationService service;
