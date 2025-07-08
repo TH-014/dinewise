@@ -23,35 +23,35 @@
 
 
 
-// import { defineConfig } from "vite";
-// import react from "@vitejs/plugin-react-swc";
-// import path from "path";
-// import { componentTagger } from "lovable-tagger";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
-// // import { configDefaults } from 'vitest/config';
+import { configDefaults } from 'vitest/config';
 
 
-// export default defineConfig(({ mode }) => ({
-//   server: {
-//     host: "::",
-//     port: 8082,
-//   },
-//   plugins: [
-//     react(),
-//     mode === 'development' && componentTagger(),
-//   ].filter(Boolean),
-//   resolve: {
-//     alias: {
-//       "@": path.resolve(__dirname, "./src"),
-//     },
-//   },
-//   test: {
-//     globals: true,
-//     environment: "jsdom",
-//     setupFiles: "./src/setUpTests.ts", // if you use setup
-//     // exclude: [...configDefaults.exclude, '**/e2e/**'],
-//   },
-// }));
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",
+    port: 8082,
+  },
+  plugins: [
+    react(),
+    mode === 'development' && componentTagger(),
+  ].filter(Boolean),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: "./src/setUpTests.ts", // if you use setup
+    exclude: [...configDefaults.exclude, '**/e2e/**'],
+  },
+}));
 
 
 // import { defineConfig } from 'vite';
@@ -87,35 +87,35 @@
 // });
 
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
-import path from 'path';
-import { componentTagger } from 'lovable-tagger';
+// import { defineConfig } from 'vite';
+// import react from '@vitejs/plugin-react-swc';
+// import path from 'path';
+// import { componentTagger } from 'lovable-tagger';
 
-const isDev = process.env.NODE_ENV !== 'production';
+// const isDev = process.env.NODE_ENV !== 'production';
 
-export default defineConfig({
-  server: {
-    host: '::',
-    port: 8082,
-  },
-  plugins: [
-    react(),
-    isDev && componentTagger()
-  ].filter(Boolean),
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
-    },
-  },
-  ...(isDev && {
-    test: {
-      globals: true,
-      environment: 'jsdom',
-      setupFiles: './src/setUpTests.ts',
-    }
-  }),
-});
+// export default defineConfig({
+//   server: {
+//     host: '::',
+//     port: 8082,
+//   },
+//   plugins: [
+//     react(),
+//     isDev && componentTagger()
+//   ].filter(Boolean),
+//   resolve: {
+//     alias: {
+//       '@': path.resolve(__dirname, './src'),
+//     },
+//   },
+//   ...(isDev && {
+//     test: {
+//       globals: true,
+//       environment: 'jsdom',
+//       setupFiles: './src/setUpTests.ts',
+//     }
+//   }),
+// });
 
 
 
