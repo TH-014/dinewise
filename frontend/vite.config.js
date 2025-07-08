@@ -54,37 +54,69 @@
 // }));
 
 
+// import { defineConfig } from 'vite';
+// import react from '@vitejs/plugin-react-swc';
+// import path from 'path';
+// import { componentTagger } from 'lovable-tagger';
+
+// export default defineConfig(({ mode }) => {
+//   const isDev = mode === 'development' || mode === 'test';
+
+//   return {
+//     server: {
+//       host: '::',
+//       port: 8082,
+//     },
+//     plugins: [
+//       react(),
+//       isDev && componentTagger(),
+//     ].filter(Boolean),
+//     resolve: {
+//       alias: {
+//         '@': path.resolve(__dirname, './src'),
+//       },
+//     },
+//     ...(isDev && {
+//       test: {
+//         globals: true,
+//         environment: 'jsdom',
+//         setupFiles: './src/setUpTests.ts',
+//       }
+//     })
+//   };
+// });
+
+
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import path from 'path';
 import { componentTagger } from 'lovable-tagger';
 
-export default defineConfig(({ mode }) => {
-  const isDev = mode === 'development' || mode === 'test';
+const isDev = process.env.NODE_ENV !== 'production';
 
-  return {
-    server: {
-      host: '::',
-      port: 8082,
+export default defineConfig({
+  server: {
+    host: '::',
+    port: 8082,
+  },
+  plugins: [
+    react(),
+    isDev && componentTagger()
+  ].filter(Boolean),
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
-    plugins: [
-      react(),
-      isDev && componentTagger(),
-    ].filter(Boolean),
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src'),
-      },
-    },
-    ...(isDev && {
-      test: {
-        globals: true,
-        environment: 'jsdom',
-        setupFiles: './src/setUpTests.ts',
-      }
-    })
-  };
+  },
+  ...(isDev && {
+    test: {
+      globals: true,
+      environment: 'jsdom',
+      setupFiles: './src/setUpTests.ts',
+    }
+  }),
 });
+
 
 
 
