@@ -28,7 +28,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-import { configDefaults } from 'vitest/config';
+// import { configDefaults } from 'vitest/config';
 
 
 export default defineConfig(({ mode }) => ({
@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => ({
     globals: true,
     environment: "jsdom",
     setupFiles: "./src/setUpTests.ts", // if you use setup
-    exclude: [...configDefaults.exclude, '**/e2e/**'],
+    // exclude: [...configDefaults.exclude, '**/e2e/**'],
   },
 }));
 
