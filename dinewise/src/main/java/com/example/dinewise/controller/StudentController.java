@@ -33,16 +33,6 @@ import com.example.dinewise.dto.response.StudentResponseDTO;
 @RequestMapping("/")
 public class StudentController {
 
-    // @Autowired
-    // StudentRepo studentRepo;
-
-    // @PostMapping("/addStudent")
-    // public String addStudents(@RequestBody Student student) {
-    //     // Logic to add students can be implemented here
-    //     studentRepo.save(student);
-    //     return "Students added successfully!";
-    // }
-
     private final StudentService studentService;
     private final JwtGeneratorInterface jwtGenerator;
     private final UserRequestRepository userRequestRepo;
@@ -57,9 +47,6 @@ public class StudentController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // password encoder
-
-
 
     public StudentController(StudentService studentService, JwtGeneratorInterface jwtGenerator, UserRequestRepository userRequestRepo) {
         this.studentService = studentService;
@@ -67,74 +54,6 @@ public class StudentController {
         this.userRequestRepo = userRequestRepo;
         // this.senderService = new EmailSenderService(); // Assuming you have a default constructor
     }
-
-    // @PostMapping("/login")
-    // public ResponseEntity<?> loginStudent(@Valid @RequestBody LoginRequestDTO loginRequestDTO){
-
-    //      try {
-    //         if (loginRequestDTO.getStudentId() == null || loginRequestDTO.getPassword() == null) {
-    //             return new ResponseEntity<>(new Message("Student Id or Password is Empty"), HttpStatus.CONFLICT);
-    //         }
-
-    //         // newStudent.setPasswordHash(passwordEncoder.encode(signupRequestDTO.getPassword()));
-
-    //         // Student studentData = studentService.getStudentByUserNameAndPasswordHash(loginRequestDTO.getUserName(),
-    //         //         passwordEncoder.encode(loginRequestDTO.getPassword()));
-
-    //         // if (studentData == null) {
-    //         //     return new ResponseEntity<>(new Message("UserName or Password is invalid"), HttpStatus.CONFLICT);
-    //         // }
-
-    //         Student studentData = studentService.getStudentByStudentId(loginRequestDTO.getStudentId());
-
-    //         if (studentData == null || 
-    //             !passwordEncoder.matches(loginRequestDTO.getPassword(), studentData.getPasswordHash())) {
-    //             return new ResponseEntity<>(new Message("UserName or Password is invalid"), HttpStatus.CONFLICT);
-    //         }
-
-    //         // Generate the token map
-    //         Map<String, String> tokenMap = jwtGenerator.generateToken(studentData);
-
-    //         // Extract the JWT token
-    //         String token = tokenMap.get("token");
-
-    //         // Create HttpOnly cookie
-    //         ResponseCookie cookie = ResponseCookie.from("authToken", token)
-    //                 .httpOnly(true)
-    //                 .secure(true) // true in production
-    //                 .path("/") // Ensure cookie is available site-wide
-    //                 .maxAge(24 * 60 * 60) // 1 day expiration
-    //                 .sameSite("Lax") // Prevent CSRF attacks
-    //                 .build();
-
-    //         // Set the cookie in the response header
-    //         HttpHeaders headers = new HttpHeaders();
-    //         headers.add(HttpHeaders.SET_COOKIE, cookie.toString());
-
-    //         // show the token in the console  that it has been set to the headers for debugging
-
-    //         // System.out.println("JWT Token set in cookie: " + token);
-
-    //         System.out.println(headers.get(HttpHeaders.SET_COOKIE));
-
-
-    //         Map<String, String> responseBody = new HashMap<>();
-    //         responseBody.put("message", tokenMap.get("message"));
-    //         responseBody.put("authToken", token); // Include token in body
-
-    //         return ResponseEntity.ok()
-    //                 .headers(headers) // still sets cookie if browser accepts
-    //                 .body(responseBody);
-
-
-    //         // return ResponseEntity.ok()
-    //         //         .headers(headers)
-    //         //         .body(new Message(tokenMap.get("message"))); // Sending back any message from the map
-    //     } catch (Exception e) {
-    //         return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-    //     }
-
-    // }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginStudent(@Valid @RequestBody LoginRequestDTO loginRequestDTO) {
@@ -181,11 +100,6 @@ public class StudentController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         }
     }
-
-
-
-
-
 
     @PostMapping("/signup/request")
     public ResponseEntity<?> requestSignup(@Valid @RequestBody SignupRequestDTO signupRequestDTO) {
@@ -266,13 +180,6 @@ public class StudentController {
 
         return ResponseEntity.ok(new Message("Signup complete. You may now log in."));
     }
-
-
-
-
-
-
-
     
     @PostMapping("/signup")
     public ResponseEntity<?> signupUser(@Valid @RequestBody SignupRequestDTO signupRequestDTO) {
@@ -304,9 +211,6 @@ public class StudentController {
             newStudent.setPermanentAddress(signupRequestDTO.getPermanentAddress());
 
             studentService.saveStudent(newStudent);
-
-            // Generate a JWT token for the new user
-            // String token = jwtGenerator.generateToken(newUser);
 
             return new ResponseEntity<>(newStudent, HttpStatus.OK);
         } catch (Exception e) {
