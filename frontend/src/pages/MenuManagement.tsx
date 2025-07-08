@@ -94,7 +94,7 @@ const MenuManagement = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await fetch('http://localhost:8080/menus', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/menus`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
