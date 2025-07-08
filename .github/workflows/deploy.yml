@@ -36,7 +36,8 @@ jobs:
 
       - name: Build and Push Backend Image
         run: |
-          docker build -t tanvir014/dinewise-backend:${IMAGE_TAG} ./dinewise
+          docker builder prune -af || true
+          docker build --no-cache -t tanvir014/dinewise-backend:${IMAGE_TAG} ./dinewise
           docker tag tanvir014/dinewise-backend:${IMAGE_TAG} tanvir014/dinewise-backend:latest
           docker push tanvir014/dinewise-backend:${IMAGE_TAG}
           docker push tanvir014/dinewise-backend:latest
