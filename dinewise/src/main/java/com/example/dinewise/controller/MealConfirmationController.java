@@ -107,4 +107,13 @@ public class MealConfirmationController {
         return ResponseEntity.ok(new Message("Meal confirmation deleted"));
     }
 
+    @GetMapping("/dues")
+    public ResponseEntity<?> getMyDues(@AuthenticationPrincipal Student student) {
+        Due due = service.getDueByStudentId(student.getStdId());
+        if (due == null) {
+            return ResponseEntity.ok(Map.of("totalDue", 0.0));
+        }
+        return ResponseEntity.ok(Map.of("totalDue", due.getTotalDue()));
+    }
+
 }

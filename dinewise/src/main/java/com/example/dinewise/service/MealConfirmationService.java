@@ -95,13 +95,9 @@ public class MealConfirmationService {
         }
     }    
 
-    @GetMapping("/student/dues")
-    public ResponseEntity<?> getMyDues(@AuthenticationPrincipal Student student) {
-        Due due = dueRepository.findByStdId(student.getStdId()).orElse(null);
-        if (due == null) return ResponseEntity.ok(Map.of("totalDue", 0.0));
-        return ResponseEntity.ok(Map.of("totalDue", due.getTotalDue()));
+    public Due getDueByStudentId(String stdId) {
+        return dueRepository.findByStdId(stdId).orElse(null);
     }
-
 
 }
 
