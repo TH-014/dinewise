@@ -5,7 +5,6 @@ WORKDIR /app
 
 COPY . .
 
-ENV NODE_ENV=development
 RUN npm install
 RUN npm run build
 
