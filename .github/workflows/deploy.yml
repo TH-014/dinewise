@@ -22,7 +22,7 @@ jobs:
 
       - name: Run Frontend Tests
         working-directory: ./frontend
-        run : npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event && npm install && npm run test
+        run : npm install && npm run test
         
 
       - name: Set up Docker Buildx
@@ -36,8 +36,7 @@ jobs:
 
       - name: Build and Push Backend Image
         run: |
-          docker builder prune -af || true
-          docker build --no-cache -t tanvir014/dinewise-backend:${IMAGE_TAG} ./dinewise
+          docker build -t tanvir014/dinewise-backend:${IMAGE_TAG} ./dinewise
           docker tag tanvir014/dinewise-backend:${IMAGE_TAG} tanvir014/dinewise-backend:latest
           docker push tanvir014/dinewise-backend:${IMAGE_TAG}
           docker push tanvir014/dinewise-backend:latest
