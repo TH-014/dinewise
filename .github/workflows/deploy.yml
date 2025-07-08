@@ -22,8 +22,8 @@ jobs:
 
       - name: Run Frontend Tests
         working-directory: ./frontend
-        run : npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event
-        run: npm install && npm run test
+        run : npm install -D vitest jsdom @testing-library/react @testing-library/jest-dom @testing-library/user-event && npm install && npm run test
+        
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
