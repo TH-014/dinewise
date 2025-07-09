@@ -53,7 +53,7 @@ const Dashboard = () => {
     try {
       if (!student?.stdId) return;
 
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/students/dues`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/student/dues`, {
         method: 'GET',
         credentials: 'include',
       });
