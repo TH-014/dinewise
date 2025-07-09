@@ -82,6 +82,28 @@ public class MealConfirmationService {
         return repository.findByStdIdAndMealDateGreaterThanEqual(std_id, date);
     }
 
+//     public List<MealConfirmation> getMealsAfterLastPayment(String stdId) {
+//     Optional<Due> due = dueRepository.findByStdId(stdId);
+//     if (due == null) {
+//         throw new RuntimeException("Due or lastPaidDate not found for student ID: " + stdId);
+//     }
+
+//     LocalDate fromDate = due.getLastPaidDate();
+//     return repository.findByStdIdAndMealDateGreaterThanEqual(stdId, fromDate);
+// }
+     
+    public List<MealConfirmation> getMealsAfterLastPayment(String stdId) {
+        Optional<Due> optionalDue = dueRepository.findByStdId(stdId);
+
+        if (optionalDue.isEmpty() || optionalDue.get().getLastPaidDate() == null) {
+            throw new RuntimeException("Due or lastPaidDate not found for student ID: " + stdId);
+        }
+
+        LocalDate fromDate = optionalDue.get().getLastPaidDate();
+        return repository.findByStdIdAndMealDateGreaterThanEqual(stdId, fromDate);
+    }
+
+
     public void deleteMealConfirmation(Long id) {
         Optional<MealConfirmation> existing = repository.findById(id);
         if (existing.isPresent()) {

@@ -15,6 +15,9 @@ import ManagerLogin from './pages/ManagerLogin';
 import ManagerDashboard from "./pages/ManagerDashboard";
 import ManagerStockView from "./pages/ManagerStockView";
 import MenuManagement from "./pages/MenuManagement";
+import MealsSinceLastPayment from '@/pages/MealsSinceLastPayment';
+
+
 
 
 const queryClient = new QueryClient();
@@ -33,6 +36,7 @@ const App = () => (
           <Route path="/manager/dashboard" element={<ManagerDashboard />} />
           <Route path="/stocks" element={<ManagerStockView />} />
           <Route path="/manager/menu" element={<MenuManagement />} />
+          <Route path="/meals-since-last-payment" element={<MealsSinceLastPayment />} />
 
 
 

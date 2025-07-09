@@ -390,6 +390,14 @@ const fetchMenuForDate = async (date: Date) => {
                   </div>
                 )}
 
+                <Button
+                  onClick={() => navigate('/meals-since-last-payment')}
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white mt-2"
+                >
+                  View Meals Since Last Payment
+                </Button>
+
+
             </Card>
 
             <Card className="mt-8 shadow-lg border-0 bg-white/70 backdrop-blur-sm">

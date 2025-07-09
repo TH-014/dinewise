@@ -13,6 +13,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +57,7 @@ public class MealConfirmationController {
                     .body(new Message("Error: " + e.getMessage()));
         }
     }
+
 
 
     @GetMapping("/from/{date}")
@@ -115,5 +117,18 @@ public class MealConfirmationController {
         }
         return ResponseEntity.ok(Map.of("totalDue", due.getTotalDue()));
     }
+
+    @GetMapping("/meals/since-last-payment/{stdId}")
+    public ResponseEntity<List<MealConfirmationResponseDTO>> getMealsSinceLastPayment(@PathVariable String stdId) {
+        List<MealConfirmation> meals = service.getMealsAfterLastPayment(stdId);
+        List<MealConfirmationResponseDTO> dtoList = meals.stream()
+            .map(MealConfirmationResponseDTO::new)
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtoList);
+    }
+
+
+    
 
 }
