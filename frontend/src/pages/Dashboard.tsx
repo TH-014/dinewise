@@ -46,6 +46,31 @@ const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [menu, setMenu] = useState<{ lunchItems: string[]; dinnerItems: string[] } | null>(null);
   const [menuDate, setMenuDate] = useState<Date>(new Date());
+  const [dues, setDues] = useState<number | null>(null);
+  const [showDues, setShowDues] = useState(false);
+
+  const fetchDues = async () => {
+    try {
+      if (!student?.stdId) return;
+
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/dues/${student.stdId}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data: { totalDue: number } = await response.json();
+        setDues(data.totalDue);
+        setShowDues(true);
+      } else {
+        toast.error("Failed to fetch dues.");
+      }
+    } catch (error) {
+      console.error("Error fetching dues:", error);
+      toast.error("An error occurred while fetching dues.");
+    }
+  };
+
 
 
   useEffect(() => {
@@ -350,6 +375,21 @@ const fetchMenuForDate = async (date: Date) => {
                   </div>
                 )}
               </CardContent>
+
+
+              <Button 
+                  onClick={fetchDues}
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Show Dues
+                </Button>
+
+                {showDues && dues !== null && (
+                  <div className="mt-4 p-4 bg-yellow-100 border border-yellow-300 rounded text-yellow-800 text-center">
+                    <p className="text-lg font-semibold">Total Due: ৳ {dues.toFixed(2)}</p>
+                  </div>
+                )}
+
             </Card>
 
             <Card className="mt-8 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
