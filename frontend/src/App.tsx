@@ -17,6 +17,10 @@ import ManagerStockView from "./pages/ManagerStockView";
 import MenuManagement from "./pages/MenuManagement";
 import MealsSinceLastPayment from '@/pages/MealsSinceLastPayment';
 
+import CommentsThreadPage from './pages/CommentsThreadPage';
+import ExpenseAddPage from "./pages/ExpenseAddPage";
+
+
 
 
 
@@ -38,6 +42,9 @@ const App = () => (
           <Route path="/manager/menu" element={<MenuManagement />} />
           <Route path="/meals-since-last-payment" element={<MealsSinceLastPayment />} />
 
+          <Route path="/manager/expense" element={<ExpenseAddPage />} />
+
+          <Route path="/comments" element={<CommentsThreadPage />} />
 
 
 

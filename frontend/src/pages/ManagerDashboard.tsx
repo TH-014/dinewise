@@ -62,6 +62,12 @@ const ManagerDashboard = () => {
         >
           Set or Update Menu
         </Button>
+         <Button 
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+          onClick={() => navigate('/manager/expense')}
+        >
+          Set or Update Expense
+        </Button>
 
       </div>
     </div>

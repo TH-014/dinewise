@@ -193,3 +193,49 @@ CREATE TABLE feedback_analysis (
     result     JSONB      NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+
+
+CREATE TABLE market_expenses (
+    id              BIGSERIAL PRIMARY KEY,
+    stock_id        BIGINT NOT NULL REFERENCES stocks(id) ON DELETE CASCADE,
+    quantity_added  NUMERIC(12,3) NOT NULL,
+    total_cost      NUMERIC(12,2) NOT NULL,
+    added_by        TEXT NOT NULL,              -- could be manager std_id or name
+    added_at        TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE daily_expenses (
+    id                 BIGSERIAL PRIMARY KEY,
+    stock_id           BIGINT NOT NULL REFERENCES stocks(id) ON DELETE CASCADE,
+    quantity_used      NUMERIC(12,3) NOT NULL,
+    used_for           TEXT,                      -- Optional: lunch, dinner, cleaning, etc.
+    used_by            TEXT NOT NULL,             -- could be manager std_id or name
+    used_at            TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+
+-- 1. Threads (one thread per menu date)
+CREATE TABLE comment_thread (
+  id          BIGSERIAL PRIMARY KEY,
+  menu_date   DATE NOT NULL,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX idx_thread_menu_date ON comment_thread(menu_date);
+
+-- 2. Comments
+CREATE TABLE comment (
+  id           BIGSERIAL PRIMARY KEY,
+  thread_id    BIGINT NOT NULL REFERENCES comment_thread(id) ON DELETE CASCADE,
+  parent_id    BIGINT REFERENCES comment(id) ON DELETE CASCADE, -- for replies
+  author_id    VARCHAR(50) NOT NULL,  -- can refer to student std_id or manager id
+  author_role  VARCHAR(20) NOT NULL,  -- 'STUDENT' or 'MANAGER'
+  anonymous    BOOLEAN NOT NULL DEFAULT FALSE,
+  content      TEXT NOT NULL,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_comment_thread ON comment(thread_id);
+
+ALTER TABLE menus
+    ALTER COLUMN lunch_items TYPE text[] USING lunch_items::text[],
+    ALTER COLUMN dinner_items TYPE text[] USING dinner_items::text[];
