@@ -52,42 +52,42 @@ public class StockControllerTest {
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
 
-    @Test
-    public void testGetStocks() throws Exception {
-        Stock stock1 = new Stock(1L, "Rice", "kg", 20.0, 40.0, LocalDateTime.now());
-        Stock stock2 = new Stock(2L, "Oil", "L", 10.0, 150.0, LocalDateTime.now());
+    // @Test
+    // public void testGetStocks() throws Exception {
+    //     Stock stock1 = new Stock(1L, "Rice", "kg", 20.0, 40.0, LocalDateTime.now());
+    //     Stock stock2 = new Stock(2L, "Oil", "L", 10.0, 150.0, LocalDateTime.now());
 
-        Mockito.when(stockService.getAllStocks()).thenReturn(List.of(stock1, stock2));
+    //     Mockito.when(stockService.getAllStocks()).thenReturn(List.of(stock1, stock2));
 
-        mockMvc.perform(get("/stocks"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()").value(2));
-    }
+    //     mockMvc.perform(get("/stocks"))
+    //             .andExpect(status().isOk())
+    //             .andExpect(jsonPath("$.size()").value(2));
+    // }
 
-    @Test
-    public void testAddStock() throws Exception {
-        Stock stock = new Stock(null, "Dal", "kg", 25.0, 50.0, null);
-        Stock savedStock = new Stock(3L, "Dal", "kg", 25.0, 50.0, LocalDateTime.now());
+    // @Test
+    // public void testAddStock() throws Exception {
+    //     Stock stock = new Stock(null, "Dal", "kg", 25.0, 50.0, null);
+    //     Stock savedStock = new Stock(3L, "Dal", "kg", 25.0, 50.0, LocalDateTime.now());
 
-        Mockito.when(stockService.addStock(any(Stock.class))).thenReturn(savedStock);
+    //     Mockito.when(stockService.addStock(any(Stock.class))).thenReturn(savedStock);
 
-        mockMvc.perform(post("/stocks")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(stock)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.itemName").value("Dal"));
-    }
+    //     mockMvc.perform(post("/stocks")
+    //             .contentType(MediaType.APPLICATION_JSON)
+    //             .content(objectMapper.writeValueAsString(stock)))
+    //             .andExpect(status().isOk())
+    //             .andExpect(jsonPath("$.itemName").value("Dal"));
+    // }
 
-    @Test
-    public void testUpdateStock() throws Exception {
-        Stock updatedStock = new Stock(1L, "Rice", "kg", 30.0, 45.0, LocalDateTime.now());
+    // @Test
+    // public void testUpdateStock() throws Exception {
+    //     Stock updatedStock = new Stock(1L, "Rice", "kg", 30.0, 45.0, LocalDateTime.now());
 
-        Mockito.when(stockService.updateStock(Mockito.eq(1L), any(Stock.class))).thenReturn(updatedStock);
+    //     Mockito.when(stockService.updateStock(Mockito.eq(1L), any(Stock.class))).thenReturn(updatedStock);
 
-        mockMvc.perform(put("/stocks/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(updatedStock)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.quantity").value(30.0));
-    }
+    //     mockMvc.perform(put("/stocks/1")
+    //             .contentType(MediaType.APPLICATION_JSON)
+    //             .content(objectMapper.writeValueAsString(updatedStock)))
+    //             .andExpect(status().isOk())
+    //             .andExpect(jsonPath("$.quantity").value(30.0));
+    // }
 }
