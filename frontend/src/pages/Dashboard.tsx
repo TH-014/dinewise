@@ -623,6 +623,14 @@ const fetchMenuForDate = async (date: Date) => {
                     <p className="text-gray-600">No menu available for this date.</p>
                   )}
                 </CardContent>
+                 <Button
+                  onClick={() => navigate({
+                    pathname: '/comments',
+                    search: `?date=${format(menuDate,'yyyy-MM-dd')}`
+                  })}
+                >
+                  View Comments
+                </Button>
               </Card>
             </div>
 
