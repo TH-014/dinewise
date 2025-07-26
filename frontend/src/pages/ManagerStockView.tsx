@@ -188,7 +188,7 @@ const ManagerStockView = () => {
 
   const fetchStocks = async () => {
     try {
-      const response = await fetch('${import.meta.env.VITE_API_BASE_URL}/stocks', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/stocks`, {
         credentials: 'include',
       });
       const data = await response.json();
