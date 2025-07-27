@@ -68,6 +68,12 @@ const ManagerDashboard = () => {
         >
           Set or Update Expense
         </Button>
+        <Button 
+          className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+          onClick={() => navigate('/manager/showhistory')}
+        >
+          Show Meal Confirmation istory
+        </Button>
          <Button onClick={() => navigate('/manager/stats')}>
           Show Stats
         </Button>
