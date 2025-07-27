@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 @RestController
 @RequestMapping("/manager")
 public class MessManagerController {
@@ -57,12 +56,15 @@ public class MessManagerController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new Message("Invalid credentials"));
         }
 
-        MessManager manager = messManagerService.getActiveManager(student.getStdId());  // It will show the running mess managers only
+        MessManager manager = messManagerService.getActiveManager(student.getStdId()); // It will show the running mess
+                                                                                       // managers only
         if (manager == null) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new Message("Not an active mess manager"));
         }
 
-        Map<String, String> tokenMap = jwtGenerator.generateToken(student.getStdId(), "manager"); // You may create a separate role if needed
+        Map<String, String> tokenMap = jwtGenerator.generateToken(student.getStdId(), "manager"); // You may create a
+                                                                                                  // separate role if
+                                                                                                  // needed
         String token = tokenMap.get("token");
 
         ResponseCookie cookie = ResponseCookie.from("authToken", token)
@@ -88,11 +90,9 @@ public class MessManagerController {
         long dinnerCount = mealConfirmationRepository.countByMealDateAndWillDinnerTrue(tomorrow);
 
         return ResponseEntity.ok(Map.of(
-            "lunchCount", lunchCount,
-            "dinnerCount", dinnerCount
-        ));
+                "lunchCount", lunchCount,
+                "dinnerCount", dinnerCount));
     }
-
 
     @PostMapping("/apply")
     public ResponseEntity<?> applyAsManager(@RequestBody ManagerApplicationRequestDTO request) {
@@ -109,15 +109,37 @@ public class MessManagerController {
         LocalDate selectedDate = LocalDate.parse((String) body.get("selectedDate"));
         boolean willLunch = (Boolean) body.get("willLunch");
         boolean willDinner = (Boolean) body.get("willDinner");
-        System.out.println("date: "+selectedDate+" lunch: "+willLunch+" dinner: "+willDinner);
+        System.out.println("date: " + selectedDate + " lunch: " + willLunch + " dinner: " + willDinner);
         List<MealConfirmation> confirmations = mealConfirmationRepository.findByMealDate(selectedDate);
         List<StudentMealConfirmationDTO> result = new ArrayList<>();
 
         for (MealConfirmation mc : confirmations) {
-            if ((willLunch && mc.isWillLunch()) || (willDinner && mc.isWillDinner())) {
-                Student student = studentService.getStudentByStudentId(mc.getStdId());
-                if (student != null) {
-                    result.add(new StudentMealConfirmationDTO(mc.getStdId(), student.getFirstName() + " " + student.getLastName()));
+            System.out.println(
+                    "roll: " + mc.getStdId() + " lunch? " + mc.isWillLunch() + " dinner? " + mc.isWillDinner());
+            if (willLunch && mc.isWillLunch()) {
+                if (willDinner && mc.isWillDinner()) {
+                    System.out.println("119");
+                    Student student = studentService.getStudentByStudentId(mc.getStdId());
+                    if (student != null) {
+                        result.add(new StudentMealConfirmationDTO(mc.getStdId(),
+                                student.getFirstName() + " " + student.getLastName()));
+                    }
+                } else if (!willDinner) {
+                    System.out.println("126");
+                    Student student = studentService.getStudentByStudentId(mc.getStdId());
+                    if (student != null) {
+                        result.add(new StudentMealConfirmationDTO(mc.getStdId(),
+                                student.getFirstName() + " " + student.getLastName()));
+                    }
+                }
+            } else if (!willLunch) {
+                if (willDinner && mc.isWillDinner()) {
+                    System.out.println("135");
+                    Student student = studentService.getStudentByStudentId(mc.getStdId());
+                    if (student != null) {
+                        result.add(new StudentMealConfirmationDTO(mc.getStdId(),
+                                student.getFirstName() + " " + student.getLastName()));
+                    }
                 }
             }
         }
@@ -126,4 +148,3 @@ public class MessManagerController {
     }
 
 }
-

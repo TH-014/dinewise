@@ -61,7 +61,7 @@ const MealConfirmationHistory = () => {
         toast.error('Please select a date');
         return;
       }
-
+      const selecteddate = format(selectedDate, "yyyy-MM-dd");
       try {
         const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/manager/showConfirmations`,
         {
@@ -71,7 +71,7 @@ const MealConfirmationHistory = () => {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            selectedDate,
+            selectedDate: selecteddate,
             willLunch,
             willDinner
           })
