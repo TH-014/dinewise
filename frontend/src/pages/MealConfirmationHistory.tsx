@@ -21,34 +21,40 @@ import { cn } from '@/lib/utils';
 import { Textarea } from '@/components/ui/textarea';
 import { Star } from 'lucide-react';
 
+// interface MealConfirmation {
+//   id: number;
+//   stdId: string;
+//   mealDate: string;
+//   willLunch: boolean;
+//   willDinner: boolean;
+//   createdAt: string;
+//   updatedAt: string;
+// }
+
 interface MealConfirmation {
-  id: number;
+  id?: number;
   stdId: string;
-  mealDate: string;
-  willLunch: boolean;
-  willDinner: boolean;
-  createdAt: string;
-  updatedAt: string;
+  name: string; // <-- add this
 }
+
 
 
 const MealConfirmationHistory = () => {
 
     const navigate = useNavigate();
-      // const [confirmedMeals, setConfirmedMeals] = useState([]);
-      const [confirmedMeals, setConfirmedMeals] = useState<MealConfirmation[]>([]);
-    
-      const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-      const [willLunch, setWillLunch] = useState(false);
-      const [willDinner, setWillDinner] = useState(false);
-      const [isSubmitting, setIsSubmitting] = useState(false);
-      const [isLoading, setIsLoading] = useState(true);
-      const [menu, setMenu] = useState<{ lunchItems: string[]; dinnerItems: string[] } | null>(null);
-      const [menuDate, setMenuDate] = useState<Date>(new Date());
-      const [commentText, setCommentText] = useState('');
-      const [rating, setRating] = useState<number | null>(null);
-      const [isRatingOpen, setIsRatingOpen] = useState(false);
-      const [isCommentOpen, setIsCommentOpen] = useState(false);
+    const [confirmedMeals, setConfirmedMeals] = useState<MealConfirmation[]>([]);
+
+    const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+    const [willLunch, setWillLunch] = useState(false);
+    const [willDinner, setWillDinner] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [menu, setMenu] = useState<{ lunchItems: string[]; dinnerItems: string[] } | null>(null);
+    const [menuDate, setMenuDate] = useState<Date>(new Date());
+    const [commentText, setCommentText] = useState('');
+    const [rating, setRating] = useState<number | null>(null);
+    const [isRatingOpen, setIsRatingOpen] = useState(false);
+    const [isCommentOpen, setIsCommentOpen] = useState(false);
 
     const fetchMealConfirmations = async () => {
       if (!selectedDate) {
@@ -57,7 +63,7 @@ const MealConfirmationHistory = () => {
       }
 
       try {
-        const response = await fetch(`http://localhost:8080/manager/showConfirmations}`,
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/manager/showConfirmations}`,
         {
           method: 'POST',
           credentials: 'include',
@@ -96,17 +102,6 @@ const MealConfirmationHistory = () => {
               </div>
               <h1 className="text-xl font-bold text-gray-900">Manager Dashboard</h1>
             </div>
-            {/* <div className="flex items-center space-x-4">
-              <span className="text-gray-600">Welcome, {student.firstName}!</span>
-              <Button 
-                variant="outline" 
-                onClick={handleLogout}
-                className="flex items-center space-x-2"
-              >
-                <LogOut className="h-4 w-4" />
-                <span>Logout</span>
-              </Button>
-            </div> */}
           </div>
         </div>
       </header>
@@ -120,9 +115,6 @@ const MealConfirmationHistory = () => {
                   <Utensils className="h-6 w-6 text-green-600" />
                   <span>Show Meal Confirmation</span>
                 </CardTitle>
-                {/* <CardDescription>
-                  Select your meal preferences for the chosen date
-                </CardDescription> */}
               </CardHeader>
               <CardContent className="space-y-6">
                 {/* Date Picker */}
@@ -148,7 +140,7 @@ const MealConfirmationHistory = () => {
                         onSelect={setSelectedDate}
                         initialFocus
                         className={cn("p-3 pointer-events-auto")}
-                        disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
+                        // disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                       />
                     </PopoverContent>
                   </Popover>
@@ -215,19 +207,31 @@ const MealConfirmationHistory = () => {
                 </Button>
               </CardContent>
             </Card>
-            {/* {menu && (
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                <div className="mb-2">
-                  <h4 className="text-blue-800 font-semibold">Menu for {format(selectedDate!, 'PPP')}</h4>
+            {confirmedMeals.length > 0 && (
+            <div className="mt-6">
+                <h2 className="text-lg font-semibold mb-4 text-gray-800">
+                Confirmed Students
+                </h2>
+                <div className="overflow-auto rounded-lg shadow border border-gray-200">
+                <table className="min-w-full bg-white text-sm text-left">
+                    <thead className="bg-gray-100 text-gray-700">
+                    <tr>
+                        <th className="px-6 py-3 border-b">Student ID</th>
+                        <th className="px-6 py-3 border-b">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {confirmedMeals.map((meal) => (
+                        <tr key={meal.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 border-b">{meal.stdId}</td>
+                        <td className="px-6 py-4 border-b">{meal.name}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
                 </div>
-                <div>
-                  <strong>Lunch:</strong> {menu.lunchItems.length ? menu.lunchItems.join(', ') : 'Not set'}
-                </div>
-                <div>
-                  <strong>Dinner:</strong> {menu.dinnerItems.length ? menu.dinnerItems.join(', ') : 'Not set'}
-                </div>
-              </div>
-            )} */}
+            </div>
+            )}
         </div>
       </main>
     </div>

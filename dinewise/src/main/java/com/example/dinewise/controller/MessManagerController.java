@@ -3,6 +3,8 @@ package com.example.dinewise.controller;
 import com.example.dinewise.dto.request.ManagerApplicationRequestDTO;
 import com.example.dinewise.dto.request.ManagerLoginRequestDTO;
 import com.example.dinewise.dto.response.Message;
+import com.example.dinewise.dto.response.StudentMealConfirmationDTO;
+import com.example.dinewise.model.MealConfirmation;
 import com.example.dinewise.model.MessManager;
 import com.example.dinewise.model.Student;
 import com.example.dinewise.repo.MealConfirmationRepository;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -98,5 +102,27 @@ public class MessManagerController {
         }
         return ResponseEntity.ok(new Message("Application submitted successfully"));
     }
+
+    @PostMapping("/showConfirmations")
+    public ResponseEntity<?> showMealConfirmations(@RequestBody Map<String, Object> body) {
+        LocalDate selectedDate = LocalDate.parse((String) body.get("selectedDate"));
+        boolean willLunch = (Boolean) body.get("willLunch");
+        boolean willDinner = (Boolean) body.get("willDinner");
+
+        List<MealConfirmation> confirmations = mealConfirmationRepository.findByMealDate(selectedDate);
+        List<StudentMealConfirmationDTO> result = new ArrayList<>();
+
+        for (MealConfirmation mc : confirmations) {
+            if ((willLunch && mc.isWillLunch()) || (willDinner && mc.isWillDinner())) {
+                Student student = studentService.getStudentByStudentId(mc.getStdId());
+                if (student != null) {
+                    result.add(new StudentMealConfirmationDTO(mc.getStdId(), student.getFirstName() + " " + student.getLastName()));
+                }
+            }
+        }
+
+        return ResponseEntity.ok(result);
+    }
+
 }
 

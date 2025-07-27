@@ -17,6 +17,6 @@ public interface MealConfirmationRepository extends JpaRepository<MealConfirmati
     void deleteById(Long id);
     long countByMealDateAndWillLunchTrue(LocalDate mealDate);
     long countByMealDateAndWillDinnerTrue(LocalDate mealDate);
-    
+    List<MealConfirmation> findByMealDate(LocalDate date);
 
 }
