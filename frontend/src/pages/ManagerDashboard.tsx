@@ -68,6 +68,9 @@ const ManagerDashboard = () => {
         >
           Set or Update Expense
         </Button>
+         <Button onClick={() => navigate('/manager/stats')}>
+          Show Stats
+        </Button>
 
       </div>
     </div>

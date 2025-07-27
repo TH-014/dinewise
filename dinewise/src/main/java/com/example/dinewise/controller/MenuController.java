@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import com.example.dinewise.model.Menu;
 import com.example.dinewise.repo.MenuRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.dinewise.service.MenuService;
 
 @RestController
 @RequestMapping("/menus")
@@ -24,6 +26,8 @@ public class MenuController {
 
     @Autowired
     private MenuRepository menuRepo;
+    @Autowired
+    private MenuService menuService;
 
     @GetMapping
     public ResponseEntity<?> getMenuByDate(@RequestParam("date") String dateStr) {
@@ -68,6 +72,19 @@ public class MenuController {
 
         menuRepo.save(menu);
         return ResponseEntity.ok(Map.of("message", "Menu saved successfully"));
+    }
+
+    @GetMapping("/distinct-items")
+    public ResponseEntity<List<String>> getDistinctItemsFromDate(@RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate) {
+        List<String> items = menuService.getDistinctItemsSince(fromDate);
+        return ResponseEntity.ok(items);
+    }
+
+    @PostMapping("/count-multiple")
+    public ResponseEntity<List<ItemStatsDto>> countMultipleItemsFromDate(
+            @RequestParam("fromDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
+            @RequestBody List<String> itemNames) {
+        return ResponseEntity.ok(menuService.getItemStatsSince(fromDate, itemNames));
     }
 
 

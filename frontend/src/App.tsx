@@ -19,6 +19,7 @@ import MealsSinceLastPayment from '@/pages/MealsSinceLastPayment';
 
 import CommentsThreadPage from './pages/CommentsThreadPage';
 import ExpenseAddPage from "./pages/ExpenseAddPage";
+import ManagerStats from "./pages/ManagerStats";
 
 
 
@@ -46,7 +47,7 @@ const App = () => (
 
           <Route path="/comments" element={<CommentsThreadPage />} />
 
-
+          <Route path="/manager/stats" element={<ManagerStats />} />
 
           <Route 
             path="/dashboard" 
