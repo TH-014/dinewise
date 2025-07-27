@@ -69,7 +69,7 @@ export default function CommentsThread({ menuDate }: { menuDate: Date }) {
   };
 
   try {
-    const res = await fetch('http://localhost:8080/comments', {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
