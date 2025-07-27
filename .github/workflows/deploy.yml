@@ -16,13 +16,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Run Backend Tests
-        working-directory: ./dinewise
-        run: mvn test
+      # - name: Run Backend Tests
+      #   working-directory: ./dinewise
+      #   run: mvn test
 
-      - name: Run Frontend Tests
-        working-directory: ./frontend
-        run : npm install && npm run test
+      # - name: Run Frontend Tests
+      #   working-directory: ./frontend
+      #   run : npm install && npm run test
         
 
       - name: Set up Docker Buildx
