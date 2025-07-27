@@ -74,7 +74,9 @@ const ManagerDashboard = () => {
         >
           Show Meal Confirmation istory
         </Button>
-         <Button onClick={() => navigate('/manager/stats')}>
+         <Button 
+         className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+         onClick={() => navigate('/manager/stats')}>
           Show Stats
         </Button>
 

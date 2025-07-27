@@ -105,10 +105,11 @@ public class MessManagerController {
 
     @PostMapping("/showConfirmations")
     public ResponseEntity<?> showMealConfirmations(@RequestBody Map<String, Object> body) {
+        System.out.println("In showConfirmations");
         LocalDate selectedDate = LocalDate.parse((String) body.get("selectedDate"));
         boolean willLunch = (Boolean) body.get("willLunch");
         boolean willDinner = (Boolean) body.get("willDinner");
-
+        System.out.println("date: "+selectedDate+" lunch: "+willLunch+" dinner: "+willDinner);
         List<MealConfirmation> confirmations = mealConfirmationRepository.findByMealDate(selectedDate);
         List<StudentMealConfirmationDTO> result = new ArrayList<>();
 

@@ -134,10 +134,12 @@ public class SecurityConfig {
                                     new UsernamePasswordAuthenticationToken(student, null, List.of());
                             SecurityContextHolder.getContext().setAuthentication(authToken);
                         } else if (role.equals("manager")) {
+                            System.out.println("Roll is manager");
                             MessManager manager = messManagerService.getByStdId(subject);
                             UsernamePasswordAuthenticationToken authToken =
                                     new UsernamePasswordAuthenticationToken(manager, null, List.of());
                             SecurityContextHolder.getContext().setAuthentication(authToken);
+                            System.out.println("Authenticated manager: " + manager.getStdId());
                         }
 
                     } catch (Exception ex) {
@@ -148,49 +150,5 @@ public class SecurityConfig {
                 filterChain.doFilter(request, response);
             }
         };
-
-
-
-
-        //     @Override
-        //     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-        //             throws ServletException, IOException {
-
-        //         String token = null;
-
-        //         // ✅ Extract token from 'authToken' cookie
-        //         if (request.getCookies() != null) {
-        //             for (Cookie cookie : request.getCookies()) {
-        //                 if ("authToken".equals(cookie.getName())) {
-        //                     token = cookie.getValue();
-        //                     break;
-        //                 }
-        //             }
-        //         }
-
-        //         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-        //             try {
-        //                 String username = jwtGenerator.getUsernameFromToken(token); // implement this
-        //                 if (username != null) {
-        //                     Student student = studentService.getStudentByUsername(username); // fetch from DB
-
-        //                     UsernamePasswordAuthenticationToken authToken =
-        //                             new UsernamePasswordAuthenticationToken(student, null, List.of()); // no roles here
-        //                     SecurityContextHolder.getContext().setAuthentication(authToken);
-        //                 }
-        //             } catch (Exception ex) {
-        //                 System.out.println("Invalid JWT Token: " + ex.getMessage());
-        //             }
-        //         }
-
-        //         filterChain.doFilter(request, response);
-        //     }
-        // };
     }
-
-
-
-    
 }
-
-
