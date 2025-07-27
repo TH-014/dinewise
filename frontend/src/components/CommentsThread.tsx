@@ -30,7 +30,7 @@ export default function CommentsThread({ menuDate }: { menuDate: Date }) {
 //   return <CommentsThread menuDate={date} />
 
   const fetchComments = async () => {
-    const res = await fetch(`http://localhost:8080/comments?date=${format(menuDate, 'yyyy-MM-dd')}`, { credentials: 'include' });
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/comments?date=${format(menuDate, 'yyyy-MM-dd')}`, { credentials: 'include' });
     const data: Comment[] = await res.json();
     setComments(data);
   };
