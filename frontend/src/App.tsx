@@ -21,7 +21,7 @@ import CommentsThreadPage from './pages/CommentsThreadPage';
 import ExpenseAddPage from "./pages/ExpenseAddPage";
 import ManagerStats from "./pages/ManagerStats";
 import MealConfirmationHistory from "./pages/MealConfirmationHistory"
-
+import MenuAISuggestion from "./pages/MenuAISuggestion";
 
 
 
@@ -49,7 +49,7 @@ const App = () => (
 
           <Route path="/manager/stats" element={<ManagerStats />} />
           <Route path="/manager/showhistory" element={<MealConfirmationHistory />} />
-
+          <Route path="/manager/menu-ai" element={<MenuAISuggestion />} />
           <Route 
             path="/dashboard" 
             element={

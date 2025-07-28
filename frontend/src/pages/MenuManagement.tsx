@@ -91,6 +91,9 @@ const MenuManagement = () => {
   const [menuDate, setMenuDate] = useState('');
   const [lunchItems, setLunchItems] = useState('');
   const [dinnerItems, setDinnerItems] = useState('');
+  const [lunchType, setLunchType] = useState('regular');
+  const [dinnerType, setDinnerType] = useState('regular');
+
 
   const handleSubmit = async () => {
     try {
@@ -104,6 +107,8 @@ const MenuManagement = () => {
           menuDate,
           lunchItems: lunchItems.split(',').map(item => item.trim()),
           dinnerItems: dinnerItems.split(',').map(item => item.trim()),
+           lunchType,
+          dinnerType,
         })
       });
 
@@ -140,6 +145,17 @@ const MenuManagement = () => {
             onChange={e => setLunchItems(e.target.value)}
             placeholder="e.g. Rice, Chicken Curry, Lentils"
           />
+           <Label htmlFor="lunch-type">Lunch Type</Label>
+          <select
+            id="lunch-type"
+            value={lunchType}
+            onChange={e => setLunchType(e.target.value)}
+          >
+            <option value="regular">Regular</option>
+            <option value="improvement">Improvement</option>
+            <option value="fest">Fest</option>
+          </select>
+
         </div>
         <div>
           <Label htmlFor="dinner-items">Dinner Items (comma-separated)</Label>
@@ -149,6 +165,17 @@ const MenuManagement = () => {
             onChange={e => setDinnerItems(e.target.value)}
             placeholder="e.g. Paratha, Egg Curry, Vegetables"
           />
+           <Label htmlFor="dinner-type">Dinner Type</Label>
+          <select
+            id="dinner-type"
+            value={dinnerType}
+            onChange={e => setDinnerType(e.target.value)}
+          >
+            <option value="regular">Regular</option>
+            <option value="improvement">Improvement</option>
+            <option value="fest">Fest</option>
+          </select>
+          
         </div>
 
         {/* <div>

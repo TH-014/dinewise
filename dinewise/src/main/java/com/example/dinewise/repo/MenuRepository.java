@@ -11,5 +11,6 @@ import com.example.dinewise.model.Menu;
 public interface MenuRepository extends JpaRepository<Menu, Long> {
     Optional<Menu> findByMenuDate(LocalDate menuDate);
     List<Menu> findByMenuDateAfter(LocalDate date);
+    List<Menu> findTop5ByMenuDateLessThanOrderByMenuDateDesc(LocalDate date);
 }
 

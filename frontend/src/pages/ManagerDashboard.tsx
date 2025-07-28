@@ -79,6 +79,10 @@ const ManagerDashboard = () => {
          onClick={() => navigate('/manager/stats')}>
           Show Stats
         </Button>
+         <Button onClick={() => navigate("/manager/menu-ai")}>
+          Show AI Menu Suggestion
+        </Button>
+
 
       </div>
     </div>

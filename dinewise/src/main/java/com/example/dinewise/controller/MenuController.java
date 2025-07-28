@@ -66,11 +66,15 @@ public class MenuController {
 
         List<String> lunchItems = objectMapper.convertValue(request.get("lunchItems"), new TypeReference<List<String>>() {});
         List<String> dinnerItems = objectMapper.convertValue(request.get("dinnerItems"), new TypeReference<List<String>>() {});
+        String lunchType = (String) request.get("lunchType");
+        String dinnerType = (String) request.get("dinnerType");
 
         Menu menu = menuRepo.findByMenuDate(menuDate).orElse(new Menu());
         menu.setMenuDate(menuDate);
         menu.setLunchItems(lunchItems);
         menu.setDinnerItems(dinnerItems);
+        menu.setLunchType(lunchType);
+        menu.setDinnerType(dinnerType);
 
         menuRepo.save(menu);
         return ResponseEntity.ok(Map.of("message", "Menu saved successfully"));
