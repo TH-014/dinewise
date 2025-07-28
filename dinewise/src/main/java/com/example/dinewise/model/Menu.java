@@ -44,11 +44,18 @@ public class Menu {
     @Column(name = "dinner_items", columnDefinition = "text[]")
     private List<String> dinnerItems = new ArrayList<>();
 
+
+
+    @Column(name = "dinner_type", length = 50)
+    private String dinnerType = "regular";
+
+    @Column(name = "lunch_type", length = 50)
+    private String lunchType = "regular";
     
-    @Column(name = "lunch_type", nullable = true, columnDefinition = "varchar(50) default 'regular'")
-    private String lunchType = "regular"; // e.g., regular, improvement, fest
-    @Column(name = "dinner_type", nullable = true, columnDefinition = "varchar(50) default 'regular'")
-    private String dinnerType = "regular"; // e.g., regular, improvement, fest
+    // @Column(name = "lunch_type", nullable = true, columnDefinition = "varchar(50) default 'regular'")
+    // private String lunchType = "regular"; // e.g., regular, improvement, fest
+    // @Column(name = "dinner_type", nullable = true, columnDefinition = "varchar(50) default 'regular'")
+    // private String dinnerType = "regular"; // e.g., regular, improvement, fest
 
 
 
