@@ -12,7 +12,8 @@ import java.util.*;
 public class GeminiService {
 
     // @Value("${gemini.api.key}")
-    private String apiKey=System.getenv("GEMINI_API_KEY");
+    private String apiKey="AIzaSyA19-LltIbULGS5ly9Fr_W77HIYcujfwac";
+    //System.getenv("GEMINI_API_KEY");
     // String geminiApiKey = System.getenv("GEMINI_API_KEY");
 
 
@@ -32,12 +33,13 @@ public class GeminiService {
 
         HttpEntity<Map<String, Object>> request = new HttpEntity<>(content, headers);
 
+
         try {
             ResponseEntity<Map> response = restTemplate.postForEntity(
                 GEMINI_API_URL + apiKey, request, Map.class
             );
 
-            System.out.println(apiKey);
+            // System.out.println(apiKey);
 
             List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.getBody().get("candidates");
             Map<String, Object> contentMap = (Map<String, Object>) candidates.get(0).get("content");
