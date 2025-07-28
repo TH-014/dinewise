@@ -37,6 +37,8 @@ public class GeminiService {
                 GEMINI_API_URL + apiKey, request, Map.class
             );
 
+            System.out.println(apiKey);
+
             List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.getBody().get("candidates");
             Map<String, Object> contentMap = (Map<String, Object>) candidates.get(0).get("content");
             List<Map<String, Object>> parts = (List<Map<String, Object>>) contentMap.get("parts");
