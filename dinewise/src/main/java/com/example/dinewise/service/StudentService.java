@@ -2,8 +2,14 @@ package com.example.dinewise.service;
 
 
 
+import com.example.dinewise.model.ApplicationStatus;
+import com.example.dinewise.model.ManagerApplication;
 import com.example.dinewise.model.Student;
+import com.example.dinewise.repo.ManagerApplicationRepo;
 import com.example.dinewise.repo.StudentRepo;
+
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +18,10 @@ public class StudentService {
 
     @Autowired
     private StudentRepo studentRepo;
+
+    @Autowired
+    private ManagerApplicationRepo applicationRepo;
+
 
 
     public Student getStudentByUsername(String username) {
@@ -64,6 +74,23 @@ public class StudentService {
     public Student saveStudent(Student student) {
         return studentRepo.save(student);
     }
+
+
+
+      public boolean applyForManager(String stdId, LocalDate appliedMonth) {
+        if (applicationRepo.existsByStdIdAndAppliedMonth(stdId, appliedMonth)) return false;
+
+        ManagerApplication application = new ManagerApplication();
+        application.setStdId(stdId);
+        application.setAppliedMonth(appliedMonth);
+        application.setStatus(ApplicationStatus.pending);
+        application.setReviewedAt(null);
+
+        applicationRepo.save(application);
+        return true;
+    }
+
+
 
 
 

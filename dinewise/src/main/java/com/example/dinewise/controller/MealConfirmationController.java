@@ -1,11 +1,19 @@
 package com.example.dinewise.controller;
+import com.example.dinewise.dto.request.ManagerApplicationRequestDTO;
 import com.example.dinewise.dto.request.MealConfirmationRequestDTO;
+import com.example.dinewise.dto.response.ApplicationStatusDto;
 import com.example.dinewise.dto.response.MealConfirmationResponseDTO;
 import com.example.dinewise.dto.response.Message;
+import com.example.dinewise.model.ApplicationStatus;
 import com.example.dinewise.model.Due;
+import com.example.dinewise.model.ManagerApplication;
 import com.example.dinewise.model.MealConfirmation;
 import com.example.dinewise.model.Student;
+import com.example.dinewise.repo.ManagerApplicationRepo;
 import com.example.dinewise.service.MealConfirmationService;
+import com.example.dinewise.service.StudentService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -25,6 +33,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 
 
@@ -33,9 +42,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class MealConfirmationController {
 
     private final MealConfirmationService service;
+     private final StudentService studentService;
+     private final ManagerApplicationRepo applicationRepository;
 
-    public MealConfirmationController(MealConfirmationService service) {
+    public MealConfirmationController(MealConfirmationService service, StudentService studentService, ManagerApplicationRepo applicationRepository) {
         this.service = service;
+        this.studentService = studentService;
+        this.applicationRepository = applicationRepository;
     }
 
     @PostMapping("/mealconfirmation")
@@ -126,6 +139,50 @@ public class MealConfirmationController {
             .collect(Collectors.toList());
 
         return ResponseEntity.ok(dtoList);
+    }
+
+
+
+
+    @PostMapping("/apply")
+    public ResponseEntity<?> applyAsManager(@RequestBody ManagerApplicationRequestDTO request, @AuthenticationPrincipal Student student) {
+        boolean success = studentService.applyForManager(student.getStdId(), request.getAppliedMonth());
+        if (!success) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Message("Already applied for this month"));
+        }
+        return ResponseEntity.ok(new Message("Application submitted successfully"));
+    }
+
+    @GetMapping("/application-status")
+    public ResponseEntity<ApplicationStatusDto> getApplicationStatus(HttpServletRequest request, @AuthenticationPrincipal Student student) {
+        String stdId = student.getStdId();
+        ManagerApplication app = applicationRepository
+                .findTopByStdIdOrderByAppliedMonthDesc(stdId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No application found"));
+
+        ApplicationStatusDto dto = new ApplicationStatusDto(
+                app.getAppliedMonth(),
+                app.getStatus(),
+                app.getReviewedAt()
+        );
+
+        return ResponseEntity.ok(dto);
+    }
+
+    @DeleteMapping("/application-status")
+    public ResponseEntity<?> cancelApplication(HttpServletRequest request, @AuthenticationPrincipal Student student) {
+        String stdId = student.getStdId();
+
+        ManagerApplication app = applicationRepository
+            .findTopByStdIdOrderByAppliedMonthDesc(stdId)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "No application found"));
+
+        if (app.getStatus() != ApplicationStatus.pending) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Only pending applications can be canceled.");
+        }
+
+        applicationRepository.delete(app);
+        return ResponseEntity.ok(Map.of("message", "Application canceled successfully."));
     }
 
 

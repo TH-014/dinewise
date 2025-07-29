@@ -25,6 +25,16 @@ CREATE TABLE student (
     created_at      TIMESTAMPTZ NOT NULL      DEFAULT NOW()
 );
 
+CREATE TABLE admin (
+    id              UUID PRIMARY KEY          DEFAULT uuid_generate_v4(),
+    username        VARCHAR(50)  NOT NULL     UNIQUE,
+    email           VARCHAR(120) NOT NULL     UNIQUE,
+    password_hash   TEXT        NOT NULL,
+    first_name      VARCHAR(50)  NOT NULL,
+    last_name       VARCHAR(50),
+    phone_number    VARCHAR(15)
+);
+
 CREATE INDEX idx_student_id ON student(std_id);
 
 CREATE TABLE user_request (
@@ -239,3 +249,22 @@ CREATE INDEX idx_comment_thread ON comment(thread_id);
 ALTER TABLE menus
     ALTER COLUMN lunch_items TYPE text[] USING lunch_items::text[],
     ALTER COLUMN dinner_items TYPE text[] USING dinner_items::text[];
+
+    CREATE TABLE admin (
+    id              UUID PRIMARY KEY          DEFAULT uuid_generate_v4(),
+    username        VARCHAR(50)  NOT NULL     UNIQUE,
+    email           VARCHAR(120) NOT NULL     UNIQUE,
+    password_hash   TEXT        NOT NULL,
+    first_name      VARCHAR(50)  NOT NULL,
+    last_name       VARCHAR(50),
+    phone_number    VARCHAR(15)
+);
+
+INSERT INTO admin (username, email, password_hash, first_name, last_name, phone_number)
+VALUES ('admin1', 'admin1@example.com', '$2a$10$DAELXEPkSsmtyQZemF07Suk9zx/0n8DajRq32vot7nGw6dly1QhNe', 'Alice', 'Johnson', '+8801234567890');
+
+INSERT INTO admin (username, email, password_hash, first_name, last_name, phone_number)
+VALUES ('admin2', 'admin2@example.com', '$2a$10$DAELXEPkSsmtyQZemF07Suk9zx/0n8DajRq32vot7nGw6dly1QhNe', 'Bob', NULL, '+8801987654321');
+
+INSERT INTO admin (username, email, password_hash, first_name, last_name, phone_number)
+VALUES ('admin3', 'admin3@example.com', '$2a$10$DAELXEPkSsmtyQZemF07Suk9zx/0n8DajRq32vot7nGw6dly1QhNe', 'Charlie', 'Lee', NULL);

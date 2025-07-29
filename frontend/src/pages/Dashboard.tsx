@@ -54,6 +54,41 @@ const Dashboard = () => {
   const [dues, setDues] = useState<number | null>(null);
   const [showDues, setShowDues] = useState(false);
 
+
+  const [selectedMonth, setSelectedMonth] = useState<string>('');
+  const [applyMessage, setApplyMessage] = useState<string>('');
+
+  const [applicationStatus, setApplicationStatus] = useState<null | {
+    appliedMonth: string;
+    status: string;
+    reviewedAt: string | null;
+  }>(null);
+  const [statusMessage, setStatusMessage] = useState<string>('');
+
+  const handleCancelApplication = async () => {
+  if (!window.confirm("Are you sure you want to cancel your application?")) return;
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/student/application-status`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      alert(err.message || "Failed to cancel application.");
+      return;
+    }
+
+    alert("Application canceled successfully.");
+    setApplicationStatus(null);
+    setStatusMessage('');
+  } catch (err) {
+    alert("Error cancelling application.");
+  }
+};
+
+
   const fetchDues = async () => {
     try {
       if (!student?.stdId) return;
@@ -200,6 +235,52 @@ const fetchMenuForDate = async (date: Date) => {
         setMenu(null);
       }
     };
+
+
+
+
+
+
+    const getNext12Months = () => {
+  const months: string[] = [];
+  const now = new Date();
+  now.setMonth(now.getMonth() + 1); // start from next month
+  for (let i = 0; i < 12; i++) {
+    const month = now.toLocaleString('default', { month: 'long' });
+    const year = now.getFullYear();
+    const value = `${year}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    months.push(`${value}`);
+    now.setMonth(now.getMonth() + 1);
+  }
+  return months;
+};
+
+const monthOptions = getNext12Months();
+
+
+
+const handleCheckStatus = async () => {
+  setStatusMessage('');
+  setApplicationStatus(null);
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/student/application-status`, {
+      credentials: 'include',
+    });
+
+    if (!res.ok) {
+      const err = await res.json();
+      setStatusMessage(err.message || 'No application found.');
+      return;
+    }
+
+    const data = await res.json();
+    setApplicationStatus(data);
+  } catch (err) {
+    setStatusMessage('No Application Found');
+  }
+};
+
+
 
 
 
@@ -404,6 +485,97 @@ const fetchMenuForDate = async (date: Date) => {
 
 
             </Card>
+
+
+                      <div className="mt-4 border p-4 rounded-lg shadow-sm">
+  <h2 className="text-lg font-semibold mb-2">Apply for Mess Manager</h2>
+  <div className="flex items-center gap-3">
+    <select
+      value={selectedMonth}
+      onChange={(e) => setSelectedMonth(e.target.value)}
+      className="border rounded px-3 py-2"
+    >
+      <option value="">Select Month</option>
+      {monthOptions.map((month) => (
+        <option key={month} value={month}>
+          {new Date(month + '-01').toLocaleString('default', {
+            month: 'long',
+            year: 'numeric',
+          })}
+        </option>
+      ))}
+    </select>
+    <button
+      onClick={async () => {
+        if (!selectedMonth) {
+          setApplyMessage('Please select a month first.');
+          return;
+        }
+        const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/student/apply`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ appliedMonth: selectedMonth+'-01' }),
+        });
+
+        const json = await res.json();
+        if (res.ok) {
+          setApplyMessage('Application submitted successfully!');
+        } else {
+          setApplyMessage(json.message || 'Application failed.');
+        }
+      }}
+      className="bg-blue-600 text-white px-4 py-2 rounded"
+    >
+      Apply
+    </button>
+  </div>
+  {applyMessage && <p className="mt-2 text-sm text-green-700">{applyMessage}</p>}
+</div>
+
+<div className="mt-6 border p-4 rounded shadow-sm">
+  <h2 className="text-lg font-semibold mb-2">Mess Manager Application Status</h2>
+  <button
+    onClick={handleCheckStatus}
+    className="bg-emerald-600 text-white px-4 py-2 rounded"
+  >
+    Check Status
+  </button>
+
+  {statusMessage && (
+    <p className="mt-2 text-red-600 text-sm">{statusMessage}</p>
+  )}
+
+  {/* {applicationStatus && (
+    <div className="mt-3 text-sm text-gray-800 space-y-1">
+      <p><strong>Applied Month:</strong> {new Date(applicationStatus.appliedMonth).toLocaleDateString('default', { month: 'long', year: 'numeric' })}</p>
+      <p><strong>Status:</strong> {applicationStatus.status}</p>
+      <p><strong>Reviewed At:</strong> {applicationStatus.reviewedAt ? new Date(applicationStatus.reviewedAt).toLocaleString() : 'Not yet reviewed'}</p>
+    </div>
+  )} */}
+
+  {applicationStatus && (
+  <div className="mt-3 text-sm text-gray-800 space-y-1">
+    <p><strong>Applied Month:</strong> {new Date(applicationStatus.appliedMonth).toLocaleDateString('default', { month: 'long', year: 'numeric' })}</p>
+    <p><strong>Status:</strong> {applicationStatus.status}</p>
+    <p><strong>Reviewed At:</strong> {applicationStatus.reviewedAt ? new Date(applicationStatus.reviewedAt).toLocaleString() : 'Not yet reviewed'}</p>
+
+    {applicationStatus.status === 'pending' && (
+      <button
+        onClick={handleCancelApplication}
+        className="mt-3 bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded"
+      >
+        Cancel Application
+      </button>
+    )}
+  </div>
+)}
+
+</div>
+
+
 
             <Card className="mt-8 shadow-lg border-0 bg-white/70 backdrop-blur-sm">
               <CardHeader>
