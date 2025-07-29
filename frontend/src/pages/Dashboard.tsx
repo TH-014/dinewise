@@ -39,7 +39,12 @@ const Dashboard = () => {
   // const [confirmedMeals, setConfirmedMeals] = useState([]);
   const [confirmedMeals, setConfirmedMeals] = useState<MealConfirmation[]>([]);
 
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  // const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(() => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    return tomorrow;
+  });
   const [willLunch, setWillLunch] = useState(false);
   const [willDinner, setWillDinner] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
