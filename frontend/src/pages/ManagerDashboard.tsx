@@ -39,13 +39,13 @@ const ManagerDashboard = () => {
       <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
         <Card className="shadow-lg">
           <CardContent className="p-6">
-            <CardTitle>Lunch Confirmations (Tomorrow)</CardTitle>
+            <CardTitle>Lunch Confirmations (Today)</CardTitle>
             <p className="text-4xl font-bold text-green-600 mt-4">{lunchCount ?? 'Loading...'}</p>
           </CardContent>
         </Card>
         <Card className="shadow-lg">
           <CardContent className="p-6">
-            <CardTitle>Dinner Confirmations (Tomorrow)</CardTitle>
+            <CardTitle>Dinner Confirmations (Today)</CardTitle>
             <p className="text-4xl font-bold text-blue-600 mt-4">{dinnerCount ?? 'Loading...'}</p>
           </CardContent>
         </Card>
@@ -79,7 +79,9 @@ const ManagerDashboard = () => {
          onClick={() => navigate('/manager/stats')}>
           Show Stats
         </Button>
-         <Button onClick={() => navigate("/manager/menu-ai")}>
+         <Button 
+         className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+         onClick={() => navigate("/manager/menu-ai")}>
           Show AI Menu Suggestion
         </Button>
 
