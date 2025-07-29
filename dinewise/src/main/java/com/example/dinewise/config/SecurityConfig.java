@@ -25,8 +25,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.security.config.Customizer;
 
+import com.example.dinewise.model.Admin;
 import com.example.dinewise.model.MessManager;
 import com.example.dinewise.model.Student;
+import com.example.dinewise.repo.AdminRepository;
 import com.example.dinewise.service.MessManagerService;
 import com.example.dinewise.service.StudentService;
 
@@ -51,11 +53,13 @@ public class SecurityConfig {
     private final StudentService studentService;
     private final JwtGeneratorImpl jwtGenerator;
     private final MessManagerService messManagerService;
+    private final AdminRepository adminRepository;
 
-    public SecurityConfig(StudentService studentService, MessManagerService messManagerService, JwtGeneratorImpl jwtGenerator) {
+    public SecurityConfig(StudentService studentService, MessManagerService messManagerService, JwtGeneratorImpl jwtGenerator, AdminRepository adminRepository) {
         this.studentService = studentService;
         this.jwtGenerator = jwtGenerator;
         this.messManagerService = messManagerService;
+        this.adminRepository = adminRepository;
     }
 
     @Bean
@@ -81,7 +85,7 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults()) // ✅ enable CORS
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signup/request","/signup/verify", "/login","/manager/login").permitAll()
+                .requestMatchers("/signup/request","/signup/verify", "/login","/manager/login","/admin/login").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class); // 🔑 custom filter
@@ -140,6 +144,14 @@ public class SecurityConfig {
                                     new UsernamePasswordAuthenticationToken(manager, null, List.of());
                             SecurityContextHolder.getContext().setAuthentication(authToken);
                             System.out.println("Authenticated manager: " + manager.getStdId());
+                        }else if (role.equals("admin")) {
+                            Admin admin = adminRepository.findByUsername(subject).orElse(null);
+                            UsernamePasswordAuthenticationToken authToken =
+                                new UsernamePasswordAuthenticationToken(admin, null, List.of());
+                            SecurityContextHolder.getContext().setAuthentication(authToken);
+                            System.out.println("Authenticated admin: " + admin.getUsername());
+                        }else {
+                            System.out.println("Role is not student or manager or admin in JWT claims");
                         }
 
                     } catch (Exception ex) {

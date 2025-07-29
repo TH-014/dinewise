@@ -23,6 +23,10 @@ import ManagerStats from "./pages/ManagerStats";
 import MealConfirmationHistory from "./pages/MealConfirmationHistory"
 import MenuAISuggestion from "./pages/MenuAISuggestion";
 
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+
+
 
 
 const queryClient = new QueryClient();
@@ -50,6 +54,11 @@ const App = () => (
           <Route path="/manager/stats" element={<ManagerStats />} />
           <Route path="/manager/showhistory" element={<MealConfirmationHistory />} />
           <Route path="/manager/menu-ai" element={<MenuAISuggestion />} />
+
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
           <Route 
             path="/dashboard" 
             element={

@@ -250,7 +250,7 @@ ALTER TABLE menus
     ALTER COLUMN lunch_items TYPE text[] USING lunch_items::text[],
     ALTER COLUMN dinner_items TYPE text[] USING dinner_items::text[];
 
-    CREATE TABLE admin (
+CREATE TABLE admin (
     id              UUID PRIMARY KEY          DEFAULT uuid_generate_v4(),
     username        VARCHAR(50)  NOT NULL     UNIQUE,
     email           VARCHAR(120) NOT NULL     UNIQUE,

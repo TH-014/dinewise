@@ -94,6 +94,12 @@ const Index = () => {
                 <Button variant="outline" onClick={() => navigate('/manager-login')}>
                   Mess Manager Login
                 </Button>
+                 <Button
+                  onClick={() => navigate('/admin/login')}
+                  className="bg-yellow-600 hover:bg-yellow-700 text-white"
+                >
+                  Admin Login
+                </Button>
                 <Button onClick={() => navigate('/signup/request')} className="bg-blue-600 hover:bg-blue-700">
                   Sign Up
                 </Button>
