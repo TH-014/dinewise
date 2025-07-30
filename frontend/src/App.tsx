@@ -29,6 +29,12 @@ import Success from "./pages/Success";
 import Fail from "./pages/Fail";
 import Cancel from "./pages/Cancel";
 
+import PaymentSuccess from './pages/PaymentSuccess';
+import PaymentFail from './pages/PaymentFail';
+
+
+
+
 
 
 
@@ -64,6 +70,9 @@ const App = () => (
           <Route path="/payment/success" element={<Success />} />
           <Route path="/payment/fail" element={<Fail />} />
           <Route path="/payment/cancel" element={<Cancel />} />
+
+          <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/fail" element={<PaymentFail />} />
 
           <Route 
             path="/dashboard" 
