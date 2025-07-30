@@ -1,4 +1,4 @@
-# Use OpenJDK base image
+# Use OpenJDK base image hello
 FROM openjdk:17-jdk-slim
 
 # Set working directory
