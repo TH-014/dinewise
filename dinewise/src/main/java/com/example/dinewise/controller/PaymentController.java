@@ -5,6 +5,7 @@ import com.example.dinewise.model.Student;
 import com.example.dinewise.repo.DueRepository;
 import com.example.dinewise.repo.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -47,20 +48,40 @@ public class PaymentController {
         return Map.of("paymentURL", paymentURL);
     }
 
-    @PostMapping("/success")
-    public Map<String, String> paymentSuccess(@RequestParam String tranId) {
-        System.out.println("Payment successful for transaction ID: " + tranId);
-        // Handle payment success
-        return Map.of("status", "success", "transactionId", tranId);
+    // @PostMapping("/success")
+    // public Map<String, String> paymentSuccess(@RequestParam String tranId) {
+    //     System.out.println("Payment successful for transaction ID: " + tranId);
+    //     // Handle payment success
+    //     return Map.of("status", "success", "transactionId", tranId);
+    // }
+
+    @PostMapping("/success/{tranId}")
+    public ResponseEntity<String> handlePaymentSuccess(
+            @PathVariable("tranId") String tranId,
+            @RequestParam Map<String, String> formData) {
+
+        // Log or process the formData
+        System.out.println("Received transaction ID: " + tranId);
+        formData.forEach((key, value) ->
+                System.out.println(key + " = " + value)
+        );
+
+        // Validate, store in DB, or trigger your business logic here
+        // Example: confirm payment, update due, etc.
+
+        return ResponseEntity.ok("Payment received");
     }
+
     @PostMapping("/failure")
     public Map<String, String> paymentFailure(@RequestParam String tranId) {
         // Handle payment failure
+        System.out.println("Payment failed");
         return Map.of("status", "failure", "transactionId", tranId);    
     }
     @PostMapping("/cancel")
     public Map<String, String> paymentCancel(@RequestParam String tranId) {
         // Handle payment cancellation
+        System.out.println("Payment cancelled");
         return Map.of("status", "cancelled", "transactionId", tranId);
     }
 }
