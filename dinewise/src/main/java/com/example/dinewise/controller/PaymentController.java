@@ -46,4 +46,21 @@ public class PaymentController {
 
         return Map.of("paymentURL", paymentURL);
     }
+
+    @PostMapping("/success")
+    public Map<String, String> paymentSuccess(@RequestParam String tranId) {
+        System.out.println("Payment successful for transaction ID: " + tranId);
+        // Handle payment success
+        return Map.of("status", "success", "transactionId", tranId);
+    }
+    @PostMapping("/failure")
+    public Map<String, String> paymentFailure(@RequestParam String tranId) {
+        // Handle payment failure
+        return Map.of("status", "failure", "transactionId", tranId);    
+    }
+    @PostMapping("/cancel")
+    public Map<String, String> paymentCancel(@RequestParam String tranId) {
+        // Handle payment cancellation
+        return Map.of("status", "cancelled", "transactionId", tranId);
+    }
 }

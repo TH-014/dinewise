@@ -25,6 +25,8 @@ public class TransactionInitiator {
             Map<String, String> postData = ParameterBuilder.constructRequestParameters();
             postData.put("total_amount", total_amount);
             postData.put("tran_id", tran_id);
+            String link = "http://52.184.83.81:8080/payment/success/"+tran_id;
+            postData.put("success_url", link);
             postData.put("cus_id", std_id);
             postData.put("cus_name", cus_name);
             postData.put("cus_email", cus_email);

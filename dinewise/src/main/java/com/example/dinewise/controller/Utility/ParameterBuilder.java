@@ -38,9 +38,9 @@ public class ParameterBuilder {
         // postData.put("success_url", baseUrl + "ssl-success-page");
         // postData.put("fail_url", "https://sandbox.sslcommerz.com/developer/fail.php");
         // postData.put("cancel_url", "https://sandbox.sslcommerz.com/developer/cancel.php");
-        postData.put("success_url", "http://52.184.83.81:8082/payment/success");
-        postData.put("fail_url", "http://52.184.83.81:8082/payment/fail");
-        postData.put("cancel_url", "http://52.184.83.81:8082/payment/cancel");
+        postData.put("success_url", "http://52.184.83.81:8080/payment/success/${tran_id}");
+        postData.put("fail_url", "http://52.184.83.81:8080/payment/fail");
+        postData.put("cancel_url", "http://52.184.83.81:8080/payment/cancel");
         postData.put("cus_id", "2005000");
         postData.put("cus_name", "ABC XY");
         postData.put("cus_email", "abc.xyz@example.com");
