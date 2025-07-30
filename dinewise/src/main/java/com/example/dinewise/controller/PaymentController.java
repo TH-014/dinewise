@@ -47,7 +47,14 @@ public class PaymentController {
 
         String tranId = "TXN_" + UUID.randomUUID().toString().replace("-", "").substring(0, 12);
         String totalAmount = String.valueOf(due.getTotalDue());
-
+        Payment payment = new Payment();
+                payment.setId(UUID.randomUUID());
+                payment.setStdId(stdId);
+                payment.setAmount(due.getTotalDue());
+                payment.setTransactionId(tranId);
+                payment.setStatus("PENDING"); // Set initial status
+                payment.setPaidAt(ZonedDateTime.now());
+                paymentRepository.save(payment);
         TransactionInitiator initiator = new TransactionInitiator();
         String paymentURL = initiator.initTrnxnRequest(
                 totalAmount,
@@ -79,9 +86,29 @@ public class PaymentController {
         formData.forEach((key, value) ->
                 System.out.println(key + " = " + value)
         );
+        // Here you need to extract payment details using the student id
 
-        // Validate, store in DB, or trigger your business logic here
-        // Example: confirm payment, update due, etc.
+        Payment payment = paymentRepository.findByTransactionId(tranId);
+        if (payment != null) {
+            System.out.println("Payment found: " + payment);
+        } else {
+            System.out.println("Payment not found");
+        }
+
+        String stdId = payment.getStdId();
+        Due due = dueRepo.findByStdId(stdId)
+                        .orElseThrow(() -> new RuntimeException("Due not found"));
+
+        // double paidAmount = due.getTotalDue();
+
+        // Update dues
+        due.setTotalDue(0);
+        due.setLastPaidDate(LocalDate.now());
+        dueRepo.save(due);
+
+        payment.setStatus("SUCCESS"); // Update payment status
+        payment.setPaidAt(ZonedDateTime.now());
+        paymentRepository.save(payment);
 
         // return ResponseEntity.ok("Payment received");
         response.sendRedirect("http://52.184.83.81:8082/payment/success?tran_id=" + tranId);

@@ -36,6 +36,8 @@ public class Payment {
     @Column(name = "paid_at")
     private ZonedDateTime paidAt;
 
+    @Column(name = "status")
+    private String status = "PENDING"; // Default status is PENDING
     // Getters and Setters
 }
 
