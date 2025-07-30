@@ -69,9 +69,10 @@ public class PaymentController {
     // }
 
     @PostMapping("/success/{tranId}")
-    public ResponseEntity<String> handlePaymentSuccess(
+    public void handlePaymentSuccess(
             @PathVariable("tranId") String tranId,
-            @RequestParam Map<String, String> formData) {
+            @RequestParam Map<String, String> formData,
+            HttpServletResponse response) throws IOException {
 
         // Log or process the formData
         System.out.println("Received transaction ID: " + tranId);
@@ -82,7 +83,8 @@ public class PaymentController {
         // Validate, store in DB, or trigger your business logic here
         // Example: confirm payment, update due, etc.
 
-        return ResponseEntity.ok("Payment received");
+        // return ResponseEntity.ok("Payment received");
+        response.sendRedirect("http://52.184.83.81:8082/payment/success?tran_id=" + tranId);
     }
 
         @PostMapping("/success")
@@ -112,11 +114,11 @@ public class PaymentController {
                 paymentRepository.save(payment);
 
                 // Redirect to frontend success page with transaction ID
-                response.sendRedirect("http://localhost:8082/payment/success?tran_id=" + tranId);
+                response.sendRedirect("http://52.184.83.81:8082/payment/success?tran_id=" + tranId);
 
             } catch (Exception e) {
                 e.printStackTrace();
-                response.sendRedirect("http://localhost:8082/payment/fail");
+                response.sendRedirect("http://52.184.83.81:8082/payment/fail");
             }
         }
     
