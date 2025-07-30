@@ -477,7 +477,7 @@ const handleCheckStatus = async () => {
                 )}
                 <Button
                   onClick={async () => {
-                    const stdId = localStorage.getItem("stdId");
+                    const stdId = localStorage.getItem("studentId");
                     if (!stdId) return;
 
                     try {
