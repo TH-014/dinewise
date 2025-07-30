@@ -60,42 +60,46 @@ public class GeminiService {
     public String getSuggestedMenu(String prompt) {
         RestTemplate restTemplate = new RestTemplate();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(apiKey);
-        headers.set("HTTP-Referer", "http://52.184.83.81:8082"); // Optional
-        headers.set("X-Title", "DineWise"); // Optional
+        int maxRetries = 5;
+        int retryCount = 0;
+        int waitTimeSeconds = 3; // initial wait time
 
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("model", "qwen/qwen3-coder:free");
+        while (retryCount < maxRetries) {
+            try {
+                // Prepare headers
+                HttpHeaders headers = new HttpHeaders();
+                headers.setContentType(MediaType.APPLICATION_JSON);
+                headers.set("Authorization", "Bearer " + apiKey);
+                headers.set("HTTP-Referer", "http://52.184.83.81:8080"); // optional
+                headers.set("X-Title", "DineWise"); // optional
 
-        List<Map<String, Object>> messages = List.of(
-            Map.of(
-                "role", "user",
-                "content", prompt
-            )
-        );
+                // Prepare request body
+                Map<String, Object> body = new HashMap<>();
+                body.put("model", "qwen/qwen3-coder:free");
+                body.put("messages", List.of(
+                        Map.of("role", "user", "content", prompt)
+                ));
 
-        requestBody.put("messages", messages);
+                HttpEntity<Map<String, Object>> request = new HttpEntity<>(body, headers);
 
-        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
+                // Send request
+                ResponseEntity<Map> response = restTemplate.postForEntity(OPENROUTER_API_URL, request, Map.class);
 
-        try {
-            ResponseEntity<Map> response = restTemplate.postForEntity(
-                OPENROUTER_API_URL, request, Map.class
-            );
+                // Extract response
+                List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
+                if (choices != null && !choices.isEmpty()) {
+                    Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
+                    return (String) message.get("content");
+                } else {
+                    return "No content returned from OpenRouter.";
+                }
 
-            List<Map<String, Object>> choices = (List<Map<String, Object>>) response.getBody().get("choices");
-            if (choices != null && !choices.isEmpty()) {
-                Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
-                return (String) message.get("content");
+            } catch (Exception e) {
+                String errorMsg = e.getMessage();
+                System.err.println("Error during API call: " + errorMsg);
             }
-
-            return "No response choices found.";
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "OpenRouter API call failed: " + e.getMessage();
         }
+
+        return "Max retries exceeded. OpenRouter request aborted.";
     }
 }
