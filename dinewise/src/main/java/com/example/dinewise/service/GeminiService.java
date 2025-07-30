@@ -57,7 +57,7 @@ public class GeminiService {
 
     private static final String OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-    public String getSuggestedCode(String prompt) {
+    public String getSuggestedMenu(String prompt) {
         RestTemplate restTemplate = new RestTemplate();
 
         HttpHeaders headers = new HttpHeaders();
