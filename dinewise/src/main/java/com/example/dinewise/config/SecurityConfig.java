@@ -70,17 +70,17 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true); // Allow sending of cookies, authorization headers, etc.
-        config.addAllowedOriginPattern("*"); // Allow all origins (for development/testing)
-        config.addAllowedHeader("*"); // Allow all headers
-        config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
-        source.registerCorsConfiguration("/**", config); // Apply this CORS config to all paths
-        return new CorsFilter(source);
-    }
+    // @Bean
+    // public CorsFilter corsFilter() {
+    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    //     CorsConfiguration config = new CorsConfiguration();
+    //     config.setAllowCredentials(true); // Allow sending of cookies, authorization headers, etc.
+    //     config.addAllowedOriginPattern("*"); // Allow all origins (for development/testing)
+    //     config.addAllowedHeader("*"); // Allow all headers
+    //     config.addAllowedMethod("*"); // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+    //     source.registerCorsConfiguration("/**", config); // Apply this CORS config to all paths
+    //     return new CorsFilter(source);
+    // }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
