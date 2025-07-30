@@ -25,6 +25,9 @@ import MenuAISuggestion from "./pages/MenuAISuggestion";
 
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
+import Success from "./pages/Success";
+import Fail from "./pages/Fail";
+import Cancel from "./pages/Cancel";
 
 
 
@@ -58,6 +61,9 @@ const App = () => (
 
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
+          <Route path="/payment/success" element={<Success />} />
+          <Route path="/payment/fail" element={<Fail />} />
+          <Route path="/payment/cancel" element={<Cancel />} />
 
           <Route 
             path="/dashboard" 

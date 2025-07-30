@@ -475,6 +475,28 @@ const handleCheckStatus = async () => {
                     <p className="text-lg font-semibold">Total Due: ৳ {dues.toFixed(2)}</p>
                   </div>
                 )}
+                <Button
+                  onClick={async () => {
+                    const stdId = localStorage.getItem("stdId");
+                    if (!stdId) return;
+
+                    try {
+                      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payment/initiate?stdId=${stdId}`, {
+                        method: "POST",
+                        credentials: "include",
+                      });
+                      const data = await res.json();
+                      if (data.paymentURL) {
+                        window.location.href = data.paymentURL; // redirect to external SSLCommerz page
+                      }
+                    } catch (err) {
+                      console.error("Payment initiation error", err);
+                    }
+                  }}
+                  className="bg-green-600 hover:bg-green-700 text-white"
+                >
+                  Pay Due
+                </Button>
 
                 <Button
                   onClick={() => navigate('/meals-since-last-payment')}
