@@ -479,13 +479,14 @@ const handleCheckStatus = async () => {
                   onClick={async () => {
                     const stdId = localStorage.getItem("studentId");
                     if (!stdId) return;
-
+                    console.log(stdId);
                     try {
                       const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/payment/initiate?stdId=${stdId}`, {
                         method: "POST",
                         credentials: "include",
                       });
                       const data = await res.json();
+                      console.log(data);
                       if (data.paymentURL) {
                         window.location.href = data.paymentURL; // redirect to external SSLCommerz page
                       }
@@ -493,7 +494,7 @@ const handleCheckStatus = async () => {
                       console.error("Payment initiation error", err);
                     }
                   }}
-                  className="bg-green-600 hover:bg-green-700 text-white"
+                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white mt-2"
                 >
                   Pay Due
                 </Button>
