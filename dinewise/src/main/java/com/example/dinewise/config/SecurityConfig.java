@@ -85,7 +85,7 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults()) // ✅ enable CORS
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signup/request","/signup/verify", "/login","/manager/login","/admin/login").permitAll()
+                .requestMatchers("/signup/request","/signup/verify", "/login","/manager/login","/admin/login","/payment/**").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class); // 🔑 custom filter
