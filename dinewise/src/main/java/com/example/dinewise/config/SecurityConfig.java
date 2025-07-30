@@ -70,17 +70,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    //     http
-    //         .csrf(csrf -> csrf.disable()) // Disable CSRF for API usage like Postman
-    //         .authorizeHttpRequests(auth -> auth
-    //             .requestMatchers("/signup","/login").permitAll() // ✅ allow signup
-    //             .anyRequest().authenticated() // other endpoints need auth
-    //         );
-
-    //     return http.build();
-    // }
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -96,10 +85,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // .cors(Customizer.withDefaults()) // ✅ enable CORS
+            .cors(Customizer.withDefaults()) // ✅ enable CORS
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signup/request","/signup/verify", "/login","/manager/login","/admin/login","/payment/success/**","/payment/fail","/payment/cancel").permitAll()
+                .requestMatchers("/signup/request","/signup/verify", "/login","/manager/login","/admin/login","/payment/success/**","/payment/success","/payment/fail","/payment/cancel").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class); // 🔑 custom filter
@@ -116,6 +105,14 @@ public class SecurityConfig {
             @Override
             protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                     throws ServletException, IOException {
+
+                String path = request.getRequestURI();
+
+                // Skip authentication for payment responses (no cookie expected)
+                if (path.startsWith("/payment/success") || path.startsWith("/payment/fail") || path.startsWith("/payment/cancel")) {
+                        filterChain.doFilter(request, response);
+                        return;
+                }
 
                 String token = null;
 

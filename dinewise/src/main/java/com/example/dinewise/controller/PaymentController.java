@@ -68,22 +68,22 @@ public class PaymentController {
     //     return Map.of("status", "success", "transactionId", tranId);
     // }
 
-    // @PostMapping("/success/{tranId}")
-    // public ResponseEntity<String> handlePaymentSuccess(
-    //         @PathVariable("tranId") String tranId,
-    //         @RequestParam Map<String, String> formData) {
+    @PostMapping("/success/{tranId}")
+    public ResponseEntity<String> handlePaymentSuccess(
+            @PathVariable("tranId") String tranId,
+            @RequestParam Map<String, String> formData) {
 
-    //     // Log or process the formData
-    //     System.out.println("Received transaction ID: " + tranId);
-    //     formData.forEach((key, value) ->
-    //             System.out.println(key + " = " + value)
-    //     );
+        // Log or process the formData
+        System.out.println("Received transaction ID: " + tranId);
+        formData.forEach((key, value) ->
+                System.out.println(key + " = " + value)
+        );
 
-    //     // Validate, store in DB, or trigger your business logic here
-    //     // Example: confirm payment, update due, etc.
+        // Validate, store in DB, or trigger your business logic here
+        // Example: confirm payment, update due, etc.
 
-    //     return ResponseEntity.ok("Payment received");
-    // }
+        return ResponseEntity.ok("Payment received");
+    }
 
         @PostMapping("/success")
         public void handlePaymentSuccess(@RequestParam Map<String, String> params, HttpServletResponse response) throws IOException {
