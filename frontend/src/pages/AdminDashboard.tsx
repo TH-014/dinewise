@@ -53,8 +53,8 @@ const handleApprove = async (id: number) => {
     });
     if (res.ok) {
       toast.success('Application approved');
+      fetchApplications(); // refresh
       navigate('/admin/dashboard');
-      // fetchApplications(); // refresh
     } else {
       toast.error('Failed to approve');
     }
@@ -72,7 +72,7 @@ const handleReject = async (id: number) => {
     });
     if (res.ok) {
       toast.success('Application rejected');
-      // fetchApplications(); // refresh
+      fetchApplications(); // refresh
       navigate('/admin/dashboard');
     } else {
       toast.error('Failed to reject');

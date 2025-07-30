@@ -79,32 +79,32 @@ public class MealConfirmationService {
         MealConfirmation saved = repository.save(mealConfirmation);
 
         // Update due
-        Due due = dueRepository.findByStdId(stdId).orElseGet(() -> {
-            Due newDue = new Due();
-            newDue.setStdId(stdId);
-            return newDue;
-        });
+        // Due due = dueRepository.findByStdId(stdId).orElseGet(() -> {
+        //     Due newDue = new Due();
+        //     newDue.setStdId(stdId);
+        //     return newDue;
+        // });
 
-        if (!existing.isPresent()) {
-            double newCharge = 0;
-            if (dto.isWillLunch()) newCharge += 50;
-            if (dto.isWillDinner()) newCharge += 50;
-            due.addToDue(newCharge);
-        } else {
-            MealConfirmation prev = existing.get();
-            boolean prevLunch = prev.isWillLunch();
-            boolean prevDinner = prev.isWillDinner();
-            boolean newLunch = dto.isWillLunch();
-            boolean newDinner = dto.isWillDinner();
+        // if (!existing.isPresent()) {
+        //     double newCharge = 0;
+        //     if (dto.isWillLunch()) newCharge += 50;
+        //     if (dto.isWillDinner()) newCharge += 50;
+        //     due.addToDue(newCharge);
+        // } else {
+        //     MealConfirmation prev = existing.get();
+        //     boolean prevLunch = prev.isWillLunch();
+        //     boolean prevDinner = prev.isWillDinner();
+        //     boolean newLunch = dto.isWillLunch();
+        //     boolean newDinner = dto.isWillDinner();
 
-            if (!prevLunch && newLunch) due.addToDue(50);
-            if (prevLunch && !newLunch) due.subtractFromDue(50);
-            if (!prevDinner && newDinner) due.addToDue(50);
-            if (prevDinner && !newDinner) due.subtractFromDue(50);
-        }
+        //     if (!prevLunch && newLunch) due.addToDue(50);
+        //     if (prevLunch && !newLunch) due.subtractFromDue(50);
+        //     if (!prevDinner && newDinner) due.addToDue(50);
+        //     if (prevDinner && !newDinner) due.subtractFromDue(50);
+        // }
 
         // 🔧 Persist due updates
-        dueRepository.save(due);
+        // dueRepository.save(due);
 
         return new MealConfirmationResponseDTO(saved);
     }
@@ -150,16 +150,16 @@ public class MealConfirmationService {
     public void deleteMealConfirmation(Long id) {
         Optional<MealConfirmation> existing = repository.findById(id);
         if (existing.isPresent()) {
-            MealConfirmation mc = existing.get();
-            int count = (mc.isWillLunch() ? 1 : 0) + (mc.isWillDinner() ? 1 : 0);
-            double amountToSubtract = count * 50.0;
+            // MealConfirmation mc = existing.get();
+            // int count = (mc.isWillLunch() ? 1 : 0) + (mc.isWillDinner() ? 1 : 0);
+            // double amountToSubtract = count * 50.0;
 
             // Update dues
-            Due due = dueRepository.findByStdId(mc.getStdId()).orElse(null);
-            if (due != null) {
-                due.subtractFromDue(amountToSubtract);
-                dueRepository.save(due);
-            }
+            // Due due = dueRepository.findByStdId(mc.getStdId()).orElse(null);
+            // if (due != null) {
+            //     due.subtractFromDue(amountToSubtract);
+            //     dueRepository.save(due);
+            // }
 
             repository.deleteById(id);
         }
